@@ -1,4 +1,10 @@
 package sk.stuba.fei.uim.oop.cards;
 
-public class Card {
+import sk.stuba.fei.uim.oop.board.Board;
+
+public abstract class Card {
+    protected String color;
+    protected String name;
+    protected Board board;
+
 }
