@@ -1,8 +1,11 @@
 package sk.stuba.fei.uim.oop.bang;
 
 import sk.stuba.fei.uim.oop.board.Board;
+import sk.stuba.fei.uim.oop.cards.Card;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
+
+import java.util.ArrayList;
 
 public class BangGame {
     private final Player[] players;
@@ -30,8 +33,17 @@ public class BangGame {
             this.players[i] = new Player(ZKlavesnice.readString(ANSI_BLUE + "*** Enter name for PLAYER " + (i + 1) + " : ***"));
         }
 
-//        this.board = new Board(this.players);
-//        this.startGame();
+        this.board = new Board(this.players);
+        this.startGame();
 
     }
+
+    private void startGame() {
+        System.out.println("--- GAME STARTED ---");
+
+    }
+
+
+
+
 }

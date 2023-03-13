@@ -3,11 +3,16 @@ package sk.stuba.fei.uim.oop.player;
 import sk.stuba.fei.uim.oop.cards.Card;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
     private final String name;
     private int lives;
     private ArrayList<Card> cards;
+
+//    private List<Card> greenCards;
+//    private List<Card> blueCards;
+
 
     public Player(String name) {
         this.cards = new ArrayList<Card>();
@@ -37,6 +42,10 @@ public class Player {
 
     public boolean isActive() {
         return this.lives > 0;
+    }
+
+    public void addCard(Card card) {
+        cards.add(card);
     }
 
     public void removeLife() {
