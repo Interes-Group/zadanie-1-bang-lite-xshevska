@@ -4,7 +4,6 @@ import sk.stuba.fei.uim.oop.cards.Card;
 import sk.stuba.fei.uim.oop.cards.blue.BlueCard;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class Player {
@@ -56,6 +55,7 @@ public class Player {
     public void removeLife() {
         this.lives--;
     }
+
     public ArrayList<BlueCard> getBlueCards() {
         return blueCards;
     }
@@ -68,8 +68,8 @@ public class Player {
     private String printBlueCards() {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < blueCards.size(); i++) {
-            if(i == blueCards.size()-1){
-                sb.append("|" + blueCards.get(i).getName()+"|");
+            if (i == blueCards.size() - 1) {
+                sb.append("|" + blueCards.get(i).getName() + "|");
             }
             sb.append("|" + blueCards.get(i).getName());
         }
@@ -79,7 +79,7 @@ public class Player {
     private String printPlayerCards() {
         return cards.stream().map((e) -> {
             StringBuffer st = new StringBuffer();
-            st.append(e.getName()+"|");
+            st.append(e.getName() + "|");
             return st;
         }).collect(Collectors.joining());
     }
@@ -87,8 +87,8 @@ public class Player {
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer("Name: " + name + " " + " ❤x" + lives);
-        sb.append("\nBLUE CARDS [" + printBlueCards()+"]");
-        sb.append("\nCARDS [" + printPlayerCards()+"]");
+        sb.append("\nBLUE CARDS [" + printBlueCards() + "]");
+        sb.append("\nCARDS [" + printPlayerCards() + "]");
         return sb.toString();
     }
 }

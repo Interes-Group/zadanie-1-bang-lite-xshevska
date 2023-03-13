@@ -1,11 +1,9 @@
 package sk.stuba.fei.uim.oop.bang;
 
 import sk.stuba.fei.uim.oop.board.Board;
-import sk.stuba.fei.uim.oop.cards.Card;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class BangGame {
