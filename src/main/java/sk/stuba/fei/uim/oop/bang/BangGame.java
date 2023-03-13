@@ -6,6 +6,7 @@ import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BangGame {
     private final Player[] players;
@@ -35,6 +36,8 @@ public class BangGame {
 
         this.board = new Board(this.players);
         this.startGame();
+        System.out.println("This is players: ");
+        this.printAllPlayers();
 
     }
 
@@ -44,6 +47,10 @@ public class BangGame {
     }
 
 
-
+    private void printAllPlayers() {
+        Arrays.stream(players).forEach((e) -> {
+            System.out.println(e + "\n");
+        });
+    }
 
 }

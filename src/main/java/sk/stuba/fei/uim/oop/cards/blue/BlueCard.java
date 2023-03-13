@@ -15,4 +15,12 @@ public class BlueCard extends Card {
     public String getColor() {
         return color;
     }
+
+    @Override
+    public String toString() {
+        return "BlueCard{" +
+                "color='" + color + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
