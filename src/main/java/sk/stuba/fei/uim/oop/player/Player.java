@@ -4,6 +4,8 @@ import sk.stuba.fei.uim.oop.cards.Card;
 import sk.stuba.fei.uim.oop.cards.blue.BlueCard;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Player {
@@ -21,7 +23,7 @@ public class Player {
         this.cards = new ArrayList<Card>();
         this.blueCards = new ArrayList<>();
         this.name = name;
-        this.lives = 4;
+        this.lives = 1;
     }
 
     public String getName() {
@@ -52,6 +54,23 @@ public class Player {
         cards.add(card);
     }
 
+    public void removeCard(int card) {
+        this.cards.remove(card);
+    }
+
+    public void removeCard(Card card) {
+        this.cards.remove(card);
+    }
+
+    public ArrayList<Card> removeCardsFromHand() {
+        ArrayList<Card> removedCards = new ArrayList<>(this.cards);
+        removedCards.addAll(this.blueCards);
+        this.cards.clear();
+        this.blueCards.clear();
+        Collections.shuffle(removedCards);
+        return removedCards;
+    }
+
     public void removeLife() {
         this.lives--;
     }
@@ -77,9 +96,14 @@ public class Player {
     }
 
     private String printPlayerCards() {
+        int counter = 1;
         return cards.stream().map((e) -> {
             StringBuffer st = new StringBuffer();
-            st.append(e.getName() + "|");
+            if(cards.get(cards.size()-1).equals(e)){
+                st.append((cards.indexOf(e)+1) +" - " + e.getName());
+            }else {
+                st.append((cards.indexOf(e)+1) +" - " + e.getName() + "| ");
+            }
             return st;
         }).collect(Collectors.joining());
     }
@@ -87,8 +111,7 @@ public class Player {
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer("Name: " + name + " " + " ❤x" + lives);
-        sb.append("\nBLUE CARDS [" + printBlueCards() + "]");
-        sb.append("\nCARDS [" + printPlayerCards() + "]");
+        sb.append("\nCARDS ON HAND: [" + printPlayerCards() + "]");
         return sb.toString();
     }
 }

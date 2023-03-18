@@ -9,28 +9,32 @@ import sk.stuba.fei.uim.oop.player.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Board {
     private ArrayList<Card> gameCards;
+    private Player[] players;
 //    private ArrayList<Tile> actionCards;
 
     public Board(Player[] players) {
-
+        this.players = players;
         //создай карты
         ArrayList<Card> cards = creatingCards();
-        System.out.println("This are cards: ");
-        cards.stream().forEach(System.out::println);
+//        System.out.println("This are cards: ");
+//        cards.stream().forEach(System.out::println);
 
         //пройдись по игрокам и дай им карты
         addingCardsForPlayers(players, cards);
-
         this.gameCards = cards;
+
     }
+
 
     private void addingCardsForPlayers(Player[] players, ArrayList<Card> cards) {
         for (Player p : players) {
             ArrayList<Card> playerCards = new ArrayList<>();
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 4; i++) {
                 Card card = cards.remove(0);
                 playerCards.add(card);
             }
@@ -79,5 +83,46 @@ public class Board {
 
         Collections.shuffle(cards);
         return cards;
+    }
+
+    public void printPlayers() {
+        System.out.println("\n--- Game Board --- DEAD PLAYERS: 💀x" + this.countDeadPlayers());
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].isActive()) {
+                System.out.println("Id: " + (i + 1) + " - " + players[i].getName() + " * " +
+                        "❤x" + players[i].getLives() + " * " +
+                        "[" + players[i].getBlueCards().stream().map((e) -> {
+                    StringBuffer st = new StringBuffer();
+                    st.append(e.getName() + ", ");
+                    return st;
+                }).collect(Collectors.joining()) + "]" +
+                        //тут будут все карты игрока
+                        "\n ALL CARDS: [" + players[i].getCards().stream().map((e) -> {
+                    StringBuffer st = new StringBuffer();
+                    st.append(e.getName() + " ");
+                    return st;
+                }).collect(Collectors.joining()) + "]");
+            }
+        }
+        System.out.println("------------------\n");
+
+    }
+
+    public int countDeadPlayers() {
+        int count = 0;
+        for (Player p : this.players) {
+            if(!p.isActive()){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void addGameCard(Card card) {
+        this.gameCards.add(card);
+    }
+
+    public int sizeOfGameCards() {
+        return this.gameCards.size();
     }
 }
