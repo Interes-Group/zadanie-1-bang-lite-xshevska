@@ -43,12 +43,12 @@ public class BangGame {
 
     private void startGame() {
         System.out.println("--- GAME STARTED ---");
-        System.out.println(ANSI_YELLOW + this.players[this.currentPlayer]);
-        // +++ потяни две карты з баличка игрового
+        System.out.println(this.players[this.currentPlayer]);
+
         this.board.pullTwoCards(this.players[this.currentPlayer]);
+
         while (this.getNumberOfActivePlayers() > 1) {
             System.out.println("GAME CARDS: " + this.board.sizeOfGameCards());
-
             Player activePlayer = this.players[this.currentPlayer];
             //проверка, активен ли текущий игрок. Если он неактивен, это означает, что он был убит или покинул игру, и все его карты из руки должны быть перемещены на игровое поле.
             if (!activePlayer.isActive()) {
@@ -61,24 +61,26 @@ public class BangGame {
                 this.incrementCounter();
                 continue;
             }
+
             System.out.println("--- PLAYER " + activePlayer.getName() + " STARTS TURN ---" + ANSI_PURPLE);
-
-//            System.out.println(ANSI_YELLOW + activePlayer);
-//            // +++ потяни две карты з баличка игрового
-//            this.board.pullTwoCards(activePlayer);
-
             System.out.println(activePlayer);
 
             this.board.printPlayers();
 
-            this.makeTurn(activePlayer);
+            if (this.makeTurn(activePlayer)) {
+                this.incrementCounter();
+                System.out.println(ANSI_YELLOW + this.players[this.currentPlayer]);
+                // +++ потяни две карты з баличка игрового
+                this.board.pullTwoCards(this.players[this.currentPlayer]);
+            }
 //            this.playCard(activePlayer);
         }
         System.out.println("--- GAME FINISHED ---");
 
     }
 
-    private void makeTurn(Player player) {
+    private Boolean makeTurn(Player player) {
+        Boolean check = false;
 
         // 1.
         // проверь голубые карты игрока, если какие-то есть, сделай их ефект
@@ -92,12 +94,15 @@ public class BangGame {
         switch (playerChoice) {
             case 1:
                 this.playCard(player);
+                check = false;
                 break;
             case 2:
                 System.out.println(player.getName() + " passed the turn to another player.");
-                this.incrementCounter();
+//                this.incrementCounter();
+                check = true;
                 break;
         }
+        return check;
 
 //        this.incrementCounter();
 
