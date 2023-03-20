@@ -18,6 +18,7 @@ public class BangGame {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
 
 
     public BangGame() {
@@ -35,8 +36,6 @@ public class BangGame {
         for (int i = 0; i < numberPlayers; i++) {
             this.players[i] = new Player(ZKlavesnice.readString(ANSI_BLUE + "*** Enter name for PLAYER " + (i + 1) + " : ***"));
         }
-
-
         this.board = new Board(this.players);
         this.startGame();
 
@@ -44,8 +43,12 @@ public class BangGame {
 
     private void startGame() {
         System.out.println("--- GAME STARTED ---");
+        System.out.println(ANSI_YELLOW + this.players[this.currentPlayer]);
+        // +++ потяни две карты з баличка игрового
+        this.board.pullTwoCards(this.players[this.currentPlayer]);
         while (this.getNumberOfActivePlayers() > 1) {
             System.out.println("GAME CARDS: " + this.board.sizeOfGameCards());
+
             Player activePlayer = this.players[this.currentPlayer];
             //проверка, активен ли текущий игрок. Если он неактивен, это означает, что он был убит или покинул игру, и все его карты из руки должны быть перемещены на игровое поле.
             if (!activePlayer.isActive()) {
@@ -58,17 +61,73 @@ public class BangGame {
                 this.incrementCounter();
                 continue;
             }
-            System.out.println("--- PLAYER " + activePlayer.getName() + " STARTS TURN ---");
+            System.out.println("--- PLAYER " + activePlayer.getName() + " STARTS TURN ---" + ANSI_PURPLE);
+
+//            System.out.println(ANSI_YELLOW + activePlayer);
+//            // +++ потяни две карты з баличка игрового
+//            this.board.pullTwoCards(activePlayer);
+
             System.out.println(activePlayer);
+
             this.board.printPlayers();
 
-
-            this.playCard(activePlayer);
-            this.incrementCounter();
+            this.makeTurn(activePlayer);
+//            this.playCard(activePlayer);
         }
         System.out.println("--- GAME FINISHED ---");
 
     }
+
+    private void makeTurn(Player player) {
+
+        // 1.
+        // проверь голубые карты игрока, если какие-то есть, сделай их ефект
+        // -
+
+
+        // 2.
+        // +++ Игрок играет картами которые у него есть. Ходит сколько хочет
+        int playerChoice = playerChoice();
+
+        switch (playerChoice) {
+            case 1:
+                this.playCard(player);
+                break;
+            case 2:
+                System.out.println(player.getName() + " passed the turn to another player.");
+                this.incrementCounter();
+                break;
+        }
+
+//        this.incrementCounter();
+
+        //  -- Перед собою игрок не может иметь одинаковые карты того же вида (гулубую)
+
+        // 3.
+        // Убираем карты. Если жизней две, то карт максимум может быть две!
+        //  -- Убираются карты рандомно.
+        //  -- делается это только на начале кола.
+    }
+
+    private int playerChoice() {
+        int playerMove = 0;
+        while (true) {
+            this.playerTurnMenu();
+            playerMove = ZKlavesnice.readInt("*** Choose what you want do from 1-2: ***");
+            if (playerMove < 1 || playerMove > 2) {
+                System.out.println(" !!! You enter wrong number of card. Try Again! !!! ");
+            } else {
+                break;
+            }
+        }
+        return playerMove;
+    }
+
+    private void playerTurnMenu() {
+        System.out.println("1. Play card");
+        System.out.println("2. Skip turn");
+    }
+
 
     private void playCard(Player activePlayer) {
         int numberCard = pickCard(activePlayer);
@@ -82,10 +141,11 @@ public class BangGame {
         }
         if (selectedCard instanceof Missed) {
             System.out.println("This card cannot be played.");
-        } else {
-            selectedCard.playCard(activePlayer);
-            System.out.println("Not Bang");
         }
+//        else {
+////            selectedCard.playCard(activePlayer);
+//            System.out.println("Else");
+//        }
 
 //        activePlayer.getCards().get(numberCard).playCard(activePlayer);
 
@@ -101,7 +161,6 @@ public class BangGame {
                 break;
             }
         }
-        System.out.println("This is player victim : " + victim);
         return victim;
     }
 
@@ -116,7 +175,7 @@ public class BangGame {
                 break;
             }
         }
-        System.out.println("This is card : " + numberCard);
+//        System.out.println("This is card : " + numberCard);
         return numberCard;
     }
 

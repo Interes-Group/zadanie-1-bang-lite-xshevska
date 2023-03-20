@@ -24,6 +24,4 @@ public abstract class BrownCard extends Card {
                 ", name='" + name + '\'' +
                 '}';
     }
-
-//    public abstract void playCard(Player player);
 }

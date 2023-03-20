@@ -5,8 +5,9 @@ import sk.stuba.fei.uim.oop.cards.blue.BlueCard;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
+
+import static sk.stuba.fei.uim.oop.bang.BangGame.ANSI_BLUE;
 
 public class Player {
     private final String name;
@@ -23,7 +24,7 @@ public class Player {
         this.cards = new ArrayList<Card>();
         this.blueCards = new ArrayList<>();
         this.name = name;
-        this.lives = 1;
+        this.lives = 4;
     }
 
     public String getName() {
@@ -110,7 +111,7 @@ public class Player {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer("Name: " + name + " " + " ❤x" + lives);
+        StringBuffer sb = new StringBuffer("Name: " + name + " " + " ❤x" + lives + ANSI_BLUE);
         sb.append("\nCARDS ON HAND: [" + printPlayerCards() + "]");
         return sb.toString();
     }

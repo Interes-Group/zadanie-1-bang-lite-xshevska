@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class Board {
     private ArrayList<Card> gameCards;
     private Player[] players;
+    public static final String ANSI_GREEN = "\u001B[32m";
 //    private ArrayList<Tile> actionCards;
 
     public Board(Player[] players) {
@@ -111,7 +112,7 @@ public class Board {
     public int countDeadPlayers() {
         int count = 0;
         for (Player p : this.players) {
-            if(!p.isActive()){
+            if (!p.isActive()) {
                 count++;
             }
         }
@@ -124,5 +125,13 @@ public class Board {
 
     public int sizeOfGameCards() {
         return this.gameCards.size();
+    }
+
+    public void pullTwoCards(Player player) {
+        for (int i = 0; i < 2; i++) {
+            player.addCard(this.gameCards.remove(0));
+        }
+        System.out.println(ANSI_GREEN + player.getName() + " pull two cards.");
+//        return  player.getName() + " pull two cards.";
     }
 }
