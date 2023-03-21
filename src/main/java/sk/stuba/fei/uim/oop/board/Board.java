@@ -7,16 +7,16 @@ import sk.stuba.fei.uim.oop.cards.blue.Prison;
 import sk.stuba.fei.uim.oop.cards.brown.*;
 import sk.stuba.fei.uim.oop.player.Player;
 
+import java.security.spec.RSAOtherPrimeInfo;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Board {
     private ArrayList<Card> gameCards;
     private Player[] players;
     public static final String ANSI_GREEN = "\u001B[32m";
-//    private ArrayList<Tile> actionCards;
 
     public Board(Player[] players) {
         this.players = players;
@@ -30,8 +30,6 @@ public class Board {
         this.gameCards = cards;
 
     }
-
-
     private void addingCardsForPlayers(Player[] players, ArrayList<Card> cards) {
         for (Player p : players) {
             ArrayList<Card> playerCards = new ArrayList<>();
@@ -85,7 +83,6 @@ public class Board {
         Collections.shuffle(cards);
         return cards;
     }
-
     public void printPlayers() {
         System.out.println("\n--- Game Board --- DEAD PLAYERS: 💀x" + this.countDeadPlayers());
         for (int i = 0; i < players.length; i++) {
@@ -108,7 +105,6 @@ public class Board {
         System.out.println("------------------\n");
 
     }
-
     public int countDeadPlayers() {
         int count = 0;
         for (Player p : this.players) {
@@ -118,20 +114,44 @@ public class Board {
         }
         return count;
     }
-
     public void addGameCard(Card card) {
         this.gameCards.add(card);
     }
-
     public int sizeOfGameCards() {
         return this.gameCards.size();
     }
-
     public void pullTwoCards(Player player) {
         for (int i = 0; i < 2; i++) {
             player.addCard(this.gameCards.remove(0));
         }
         System.out.println(ANSI_GREEN + player.getName() + " pull two cards.");
 //        return  player.getName() + " pull two cards.";
+    }
+    public Player[] getPlayers() {
+        return players;
+    }
+
+    public void controllHartsAndCards(Player player) {
+        int cardForDeleting = 0;
+
+        if(player.getLives() < player.getCards().size()){
+            cardForDeleting = player.getCards().size() - player.getLives();
+            System.out.println(player.getName() + " will delete " + cardForDeleting + " cards!");
+            this.deletingCardsFromPerson(player, cardForDeleting);
+            System.out.println();
+        }
+
+    }
+
+    private void deletingCardsFromPerson(Player player, int cardsNumber) {
+        Random rand = null;
+        int card;
+        // max card size = a --- min card size = 0 ---
+        for (int i = 0; i < cardsNumber; i++) {
+            // rand.nextInt((max - min) + 1) + min
+            card = (int) (Math.random() * (player.getCards().size() - 0));
+            System.out.println(player.getName() + " (" + i + ") - rand card is: " + player.getCards().get(card));
+            player.removeCard(card);
+        }
     }
 }

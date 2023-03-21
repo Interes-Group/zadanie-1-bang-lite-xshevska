@@ -1,9 +1,12 @@
 package sk.stuba.fei.uim.oop.cards.brown;
 
 import sk.stuba.fei.uim.oop.board.Board;
+import sk.stuba.fei.uim.oop.cards.Card;
 import sk.stuba.fei.uim.oop.player.Player;
 
-public class CatBalou extends BrownCard {
+import java.util.Calendar;
+
+public class CatBalou extends Card {
     private static final String CARD_NAME = "Cat Balou";
 
     public CatBalou(String name, Board board) {
