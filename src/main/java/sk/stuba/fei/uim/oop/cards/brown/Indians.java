@@ -14,6 +14,7 @@ public class Indians extends Card {
 
     @Override
     public void playCard(Player player) {
+        super.playCard(player);
         for (Player p : this.board.getPlayers()) {
             boolean bang = false;
             if (!p.equals(player)) {

@@ -15,6 +15,21 @@ public class CatBalou extends Card {
 
     @Override
     public void playCard(Player player) {
+        super.playCard(player);
+        // вызываю функцию для выбора игрока на которого будем стрелять
+        int playNumber = this.board.getTargetPlayNumber(player);
 
+        if(this.board.getPlayers()[playNumber].getCards().size() == 0 &&
+                this.board.getPlayers()[playNumber].getBlueCards().size() == 0){
+            System.out.println("Sorry, " + player.getName() + " don't have any card right now.");
+            System.out.println("This card cannot be played");
+            return;
+        }
+
+        Player targetPlayer = this.board.getPlayers()[playNumber];
+        // check which type of cards you want to remove from player!
+        boolean cardOnTable = this.board.choseTypeOfCardToRemoveFromPlayer(targetPlayer);
+        //remove that card!
+        this.board.deleteRandomCardOfPlayer(targetPlayer, cardOnTable);
     }
 }

@@ -13,6 +13,7 @@ public class Stagecoach extends Card {
 
     @Override
     public void playCard(Player player) {
+        super.playCard(player);
         this.board.pullTwoCards(player);
         this.board.addGameCard(this);
         System.out.println("Two cards are pulled to " + player.getName());

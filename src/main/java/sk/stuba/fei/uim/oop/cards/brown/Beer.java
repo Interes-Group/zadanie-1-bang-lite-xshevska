@@ -13,6 +13,7 @@ public class Beer extends Card {
 
     @Override
     public void playCard(Player player) {
+        super.playCard(player);
         System.out.println("Life up [❤ + 1] to " + player.getName());
         player.addLife();
         this.board.addGameCard(this);

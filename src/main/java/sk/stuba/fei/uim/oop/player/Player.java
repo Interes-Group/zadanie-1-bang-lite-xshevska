@@ -13,15 +13,17 @@ import static sk.stuba.fei.uim.oop.bang.BangGame.ANSI_BLUE;
 public class Player {
     private final String name;
     private int lives;
-
     private ArrayList<BlueCard> blueCards;
-    private ArrayList<Card> cards;
 
+    private ArrayList<Card> cards;
     public Player(String name) {
-        this.cards = new ArrayList<Card>();
+        this.cards = new ArrayList<>();
         this.blueCards = new ArrayList<>();
         this.name = name;
         this.lives = 4;
+    }
+    public void setBlueCards(ArrayList<BlueCard> blueCards) {
+        this.blueCards = blueCards;
     }
 
     public String getName() {
@@ -54,6 +56,11 @@ public class Player {
 
     public void removeCard(int card) {
         this.cards.remove(card);
+    }
+
+    public void removeBlueCard(int card) {
+        this.blueCards.remove(card);
+        // add to board gamecard
     }
 
     public void removeCard(Card card) {

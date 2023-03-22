@@ -2,12 +2,14 @@ package sk.stuba.fei.uim.oop.bang;
 
 import sk.stuba.fei.uim.oop.board.Board;
 import sk.stuba.fei.uim.oop.cards.Card;
+import sk.stuba.fei.uim.oop.cards.blue.Prison;
 import sk.stuba.fei.uim.oop.cards.brown.*;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class BangGame {
     private final Player[] players;
@@ -61,6 +63,17 @@ public class BangGame {
                 continue;
             }
 
+            // проверь в тюрме ли он текущий игрок
+            // если да, то удали карту Тюрма от него и пускай ходит дальше
+            if(this.board.checkPrisoner(activePlayer)) {
+                // удали карту тюрма от игрока
+                activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
+                // add to gameCard
+                this.board.addGameCard(new Prison("Prison", this.board));
+                this.incrementCounter();
+                continue;
+            }
+
 
             System.out.println("Player cards on hand: " + activePlayer.printCardsOnHand());
             this.board.pullTwoCards(activePlayer);
@@ -72,13 +85,13 @@ public class BangGame {
 
             int playerMove;
             while (true) {
-                this.playerTurnMenu();
+                System.out.println("1. Play card");
+                System.out.println("2. Skip turn");
                 playerMove = ZKlavesnice.readInt("*** Choose what you want do from 1-2: ***");
                 if (playerMove < 1 || playerMove > 2) {
                     System.out.println(" !!! You enter wrong number of card. Try Again! !!! ");
-                } else if(playerMove == 1) {
+                } else if (playerMove == 1) {
                     this.playCard(activePlayer);
-
                     //print game.
                     System.out.println("--- " + activePlayer.getName() + "'s TURN ---" + ANSI_PURPLE);
                     System.out.println(activePlayer);
@@ -93,10 +106,9 @@ public class BangGame {
 
             // пройтись по игрокy и удалить рандомно столько карт, чтобы осталось у нeuj какрт как и жизней
             // если 4 жизни у него, то оставь у игрока 4 максимум карт.
-            System.out.println("This is NewCircle of the GAME");
-            System.out.println("--- must check for the harts and cards of players --- ");
-            this.board.controllHartsAndCards(activePlayer);
-
+//            System.out.println("This is NewCircle of the GAME");
+//            System.out.println("--- must check for the harts and cards of players --- ");
+//            this.board.controllHartsAndCards(activePlayer);
 
 
             // 2.
@@ -104,67 +116,33 @@ public class BangGame {
             //  -- Перед собою игрок не может иметь одинаковые карты того же вида (гулубую)
             // 3.
             // Убираем карты. Если жизней две, то карт максимум может быть две!
-            //  -- Убираются карты рандомно.
-            //  -- делается это только на начале кола.
+            //  ++ Убираются карты рандомно.
+            //  ++ делается это только на начале кола.
 
         }
         System.out.println("--- GAME FINISHED ---");
         // Выпиши победителя как-то, чтобы было красиво
 
     }
-    private void playerTurnMenu() {
-        System.out.println("1. Play card");
-        System.out.println("2. Skip turn");
-    }
     private void playCard(Player activePlayer) {
         int numberCard = pickCard(activePlayer);
         Card selectedCard = activePlayer.getCards().get(numberCard);
-        int playNumber;
 
-        if (selectedCard instanceof Bang) {
-            Bang bangCard = (Bang) selectedCard;
-            playNumber = whoKill(activePlayer);
-            // если человек выбрал себя || выбранный человек уже мертв, то пускай человек выберет еще раз номер игрока
-            // на которого будет произведена атака
-            while (playNumber == getGameIndexOfCurrentPlayer(activePlayer) || !this.players[playNumber].isActive()) {
-                System.out.println("You can't shoot to that player.");
-                System.out.println("Chose another player PLEASE!");
-                playNumber = whoKill(activePlayer);
-            }
-            activePlayer.removeCard(numberCard);
-            bangCard.playCard(players[playNumber]);
-        }
         if (selectedCard instanceof Missed) {
             System.out.println("This card cannot be played.");
-        }
-        if (selectedCard instanceof Beer) {
-            System.out.println("You chose the Beer - ❤ + 1.");
-            selectedCard.playCard(activePlayer);
+        } else {
             activePlayer.removeCard(numberCard);
-        }
-        if (selectedCard instanceof Stagecoach) {
-            System.out.println("You chose " + selectedCard.getName() + "! Lucky plus 2x🎴");
             selectedCard.playCard(activePlayer);
-            activePlayer.removeCard(numberCard);
         }
-        if (selectedCard instanceof Indians) {
-            System.out.println("You chose Indians! Prepare for GREAT BATTLE 😈 + 🔫");
-            selectedCard.playCard(activePlayer);
-            activePlayer.removeCard(numberCard);
-        }
+
+//        Bang
+//        Missed
+//        Beer
+//        Stagecoach
+//        Indians
+
     }
-    private int whoKill(Player activePlayer) {
-        int victim;
-        while (true) {
-            victim = ZKlavesnice.readInt("*** Who do you want to shoot? : ***") - 1;
-            if (victim < 0 || victim > this.players.length - 1) {
-                System.out.println(" !!! You enter wrong number of card. Try Again! !!! ");
-            } else {
-                break;
-            }
-        }
-        return victim;
-    }
+
     private int pickCard(Player activePlayer) {
         int numberCard;
         while (true) {
@@ -178,13 +156,12 @@ public class BangGame {
 //        System.out.println("This is card : " + numberCard);
         return numberCard;
     }
+
     private void incrementCounter() {
         this.currentPlayer++;
         this.currentPlayer %= this.players.length;
     }
-    private void printAllPlayers() {
-        Arrays.stream(players).forEach((e) -> System.out.println(e + "\n"));
-    }
+
     private int getNumberOfActivePlayers() {
         int count = 0;
         for (Player player : this.players) {
@@ -194,6 +171,7 @@ public class BangGame {
         }
         return count;
     }
+
     private int getGameIndexOfCurrentPlayer(Player player) {
         for (int i = 0; i < this.players.length; i++) {
             if (players[i].equals(player)) {
