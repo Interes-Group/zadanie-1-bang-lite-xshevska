@@ -58,6 +58,7 @@ public class CatBalou extends Card {
                 this.board.getPlayers()[playNumber].getBlueCards().size() == 0){
             System.out.println("Sorry, " + player.getName() + " don't have any card right now.");
             System.out.println("This card cannot be played");
+            player.addCard(this);
             return;
         }
 

@@ -43,12 +43,15 @@ public class Board {
     private ArrayList<Card> creatingCards() {
         ArrayList<Card> cards = new ArrayList<>();
         IntStream.range(0, 2).forEach(i -> cards.add(new Barrel(this)));
+//        IntStream.range(0, 20).forEach(i -> cards.add(new Barrel(this)));
         cards.add(new Dynamite(this));
         IntStream.range(0, 3).forEach(i -> cards.add(new Prison(this)));
+//        IntStream.range(0, 20).forEach(i -> cards.add(new Prison(this)));
         IntStream.range(0, 30).forEach(i -> cards.add(new Bang(this)));
         IntStream.range(0, 15).forEach(i -> cards.add(new Missed(this)));
         IntStream.range(0, 8).forEach(i -> cards.add(new Beer(this)));
-        IntStream.range(0, 6).forEach(i -> cards.add(new CatBalou(this)));
+//        IntStream.range(0, 6).forEach(i -> cards.add(new CatBalou(this)));
+        IntStream.range(0, 15).forEach(i -> cards.add(new CatBalou(this)));
         IntStream.range(0, 4).forEach(i -> cards.add(new Stagecoach(this)));
         IntStream.range(0, 2).forEach(i -> cards.add(new Indians(this)));
 

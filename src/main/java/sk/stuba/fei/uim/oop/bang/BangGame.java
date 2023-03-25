@@ -101,8 +101,10 @@ public class BangGame {
             System.out.println("This is NewCircle of the GAME");
             System.out.println("--- must check for the harts and cards of players --- ");
             this.board.controllHartsAndCards(activePlayer);
+            System.out.println("Game cards total are: " + this.board.getGameCards().size());
         }
         System.out.println("--- GAME FINISHED ---");
+
 
     }
 
