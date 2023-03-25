@@ -8,17 +8,16 @@ import sk.stuba.fei.uim.oop.player.Player;
 public class Bang extends Card {
     private static final String CARD_NAME = "Bang";
 
-    public Bang(String name, Board board) {
+    public Bang(Board board) {
         super(CARD_NAME, board);
     }
-
 
     @Override
     public void playCard(Player player) {
         super.playCard(player);
 
-        // вызываю функцию для выбора игрока на которого будем стрелять
-        int playNumber = this.board.getTargetPlayNumber(player);
+//        // вызываю функцию для выбора игрока на которого будем стрелять
+        int playNumber = this.getPlayerNumber(player);
         Player targetPlayer = this.board.getPlayers()[playNumber];
 
         // check player for shoot
@@ -35,7 +34,7 @@ public class Bang extends Card {
 
 
         Card missed = targetPlayer.getCards().stream()
-                .filter(card -> card instanceof Missed || card instanceof Barrel)
+                .filter(card -> card instanceof Missed)
                 .findAny()
                 .orElse(null);
         if (missed == null) {
@@ -45,9 +44,6 @@ public class Bang extends Card {
                 targetPlayer.printDead();
             }
             this.board.addGameCard(this);
-        }else if(missed instanceof Barrel) {
-            System.out.println("This player has Barrel on himself.");
-            System.out.println("NOT IMPLEMENTED YET!");
         }else {
             missed.playCard(targetPlayer);
             this.board.addGameCard(this);

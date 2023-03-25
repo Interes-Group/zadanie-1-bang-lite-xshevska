@@ -7,8 +7,8 @@ import sk.stuba.fei.uim.oop.player.Player;
 public class Stagecoach extends Card {
     private static final String CARD_NAME = "Stagecoach";
 
-    public Stagecoach(String name, Board board) {
-        super(name, board);
+    public Stagecoach(Board board) {
+        super(CARD_NAME, board);
     }
 
     @Override

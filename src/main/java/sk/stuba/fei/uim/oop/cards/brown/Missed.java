@@ -7,8 +7,8 @@ import sk.stuba.fei.uim.oop.player.Player;
 public class Missed extends Card {
     private static final String CARD_NAME = "Missed";
 
-    public Missed(String name, Board board) {
-        super(name, board);
+    public Missed(Board board) {
+        super(CARD_NAME, board);
     }
 
     @Override

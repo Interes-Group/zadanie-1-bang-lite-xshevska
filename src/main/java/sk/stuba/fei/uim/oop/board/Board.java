@@ -15,21 +15,15 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Board {
+    public static final String ANSI_GREEN = "\u001B[32m";
     private ArrayList<Card> gameCards;
     private Player[] players;
-    public static final String ANSI_GREEN = "\u001B[32m";
 
     public Board(Player[] players) {
         this.players = players;
-        //создай карты
         ArrayList<Card> cards = creatingCards();
-//        System.out.println("This are cards: ");
-//        cards.stream().forEach(System.out::println);
-
-        //пройдись по игрокам и дай им карты
         addingCardsForPlayers(players, cards);
         this.gameCards = cards;
-
     }
 
     private void addingCardsForPlayers(Player[] players, ArrayList<Card> cards) {
@@ -48,15 +42,16 @@ public class Board {
      */
     private ArrayList<Card> creatingCards() {
         ArrayList<Card> cards = new ArrayList<>();
-        IntStream.range(0, 2).forEach(i -> cards.add(new Barrel("Barrel", this)));
-        cards.add(new Dynamite("Dynamite", this));
-        IntStream.range(0, 3).forEach(i -> cards.add(new Prison("Prison", this)));
-        IntStream.range(0, 30).forEach(i -> cards.add(new Bang("Bang", this)));
-        IntStream.range(0, 15).forEach(i -> cards.add(new Missed("Missed", this)));
-        IntStream.range(0, 8).forEach(i -> cards.add(new Beer("Beer", this)));
-        IntStream.range(0, 6).forEach(i -> cards.add(new CatBalou("CatBalou", this)));
-        IntStream.range(0, 4).forEach(i -> cards.add(new Stagecoach("Stagecoach", this)));
-        IntStream.range(0, 2).forEach(i -> cards.add(new Indians("Indians", this)));
+        IntStream.range(0, 2).forEach(i -> cards.add(new Barrel(this)));
+        cards.add(new Dynamite(this));
+//        IntStream.range(0, 3).forEach(i -> cards.add(new Prison(this)));
+        IntStream.range(0, 20).forEach(i -> cards.add(new Prison(this)));
+        IntStream.range(0, 30).forEach(i -> cards.add(new Bang(this)));
+        IntStream.range(0, 15).forEach(i -> cards.add(new Missed(this)));
+        IntStream.range(0, 8).forEach(i -> cards.add(new Beer(this)));
+        IntStream.range(0, 6).forEach(i -> cards.add(new CatBalou(this)));
+        IntStream.range(0, 4).forEach(i -> cards.add(new Stagecoach(this)));
+        IntStream.range(0, 2).forEach(i -> cards.add(new Indians(this)));
 
         Collections.shuffle(cards);
         return cards;
@@ -66,9 +61,7 @@ public class Board {
         System.out.println("\n--- Game Board --- DEAD PLAYERS: 💀x" + this.countDeadPlayers());
         for (int i = 0; i < players.length; i++) {
             if (players[i].isActive()) {
-                System.out.println("Id: " + (i + 1) + " - " + players[i].getName() + " * " +
-                        "❤x" + players[i].getLives() + " * " +
-                        "[" + players[i].getBlueCards().stream().map((e) -> {
+                System.out.println("Id: " + (i + 1) + " - " + players[i].getName() + " * " + "❤x" + players[i].getLives() + " * " + "[" + players[i].getBlueCards().stream().map((e) -> {
                     StringBuffer st = new StringBuffer();
                     st.append(e.getName() + ", ");
                     return st;
@@ -124,7 +117,6 @@ public class Board {
             this.deletingCardsFromPerson(player, cardForDeleting);
             System.out.println();
         }
-
     }
 
     private void deletingCardsFromPerson(Player player, int cardsNumber) {
@@ -139,19 +131,6 @@ public class Board {
         }
     }
 
-    public int setTarget(Player activePlayer) {
-        int victim;
-        while (true) {
-            victim = ZKlavesnice.readInt("*** Who do you want to shoot? : ***") - 1;
-            if (victim < 0 || victim > this.players.length - 1) {
-                System.out.println(" !!! You enter wrong number of card. Try Again! !!! ");
-            } else {
-                break;
-            }
-        }
-        return victim;
-    }
-
     public int getGameIndexOfCurrentPlayer(Player player) {
         for (int i = 0; i < this.players.length; i++) {
             if (players[i].equals(player)) {
@@ -161,76 +140,27 @@ public class Board {
         return 0;
     }
 
-    public int getTargetPlayNumber(Player player) {
-        int playNumber = this.setTarget(player);
-
-        // если человек выбрал себя || выбранный человек уже мертв, то пускай человек выберет еще раз номер игрока
-        // на которого будет произведена атака
-        while (playNumber == this.getGameIndexOfCurrentPlayer(player) || !this.getPlayers()[playNumber].isActive()) {
-            System.out.println("You can't play to that player.");
-            System.out.println("Chose another player PLEASE!");
-            playNumber = this.setTarget(player);
-        }
-        return playNumber;
-    }
-
-    public boolean choseTypeOfCardToRemoveFromPlayer(Player player) {
-        int typeCard;
-        while (true) {
-            System.out.println("1. Cards on table");
-            System.out.println("2. Cards on hand");
-            typeCard = ZKlavesnice.readInt("*** Which type of card you want to chose to remove " +
-                    "from Player : ***");
-            if (typeCard < 1 || typeCard > 2) {
-                System.out.println(" !!! You enter wrong number. Try Again! !!! ");
-            } else if ((typeCard == 1 && player.getBlueCards().isEmpty()) ||
-                    (typeCard == 2 && player.getCards().isEmpty())) { //check if player has that cards.
-                System.out.println(" !!! Player don't have any cards to remove from table !!! ");
-            } else {
-                break;
-            }
-        }
-        return typeCard == 1;
-    }
-
-    public void deleteRandomCardOfPlayer(Player player, boolean card) {
-        int max, randCard;
-        if (card) {
-            max = player.getBlueCards().size() - 1;
-            randCard = (int) (Math.random() * (max));
-            this.gameCards.add(player.getBlueCards().get(randCard));
-            player.removeBlueCard(randCard);
-        } else {
-            max = player.getCards().size() - 1;
-            randCard = (int) (Math.random() * (max));
-            this.gameCards.add(player.getCards().get(randCard));
-            player.removeCard(randCard);
-        }
-    }
-
     public boolean checkPrisoner(Player player) {
-        Card prison = player.getCards().stream()
-                .filter(card -> card instanceof Prison)
-                .findAny()
-                .orElse(null);
+        Card prison = player.getBlueCards().stream().filter(card -> card instanceof Prison).findAny().orElse(null);
+        System.out.println("checkPrisoner " + player.getName() +": " + prison + " | " + (prison != null));
         // сделай проверку на побег
         // есди да, то побеги Тру
         // если нет, то Фалсе
         return prison != null;
     }
 
-    public boolean chanceToEscape() {
-        int rand = (int)(Math.random() * 3);
-        System.out.println("random namber to escape is - " + rand);
-        return rand == 3;
-    }
-
     public int findPrison(Player player) {
+        int indexCart = -1;
         for (int i = 0; i < player.getBlueCards().size(); i++) {
-            if(player.getBlueCards().get(i) instanceof Prison) {
-                return i;
+            if (player.getBlueCards().get(i) instanceof Prison) {
+                indexCart = i;
+                break;
             }
         }
-        return 0;
+        return indexCart;
+    }
+
+    public ArrayList<Card> getGameCards() {
+        return gameCards;
     }
 }

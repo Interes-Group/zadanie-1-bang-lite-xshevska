@@ -11,19 +11,17 @@ import java.util.stream.Collectors;
 import static sk.stuba.fei.uim.oop.bang.BangGame.ANSI_BLUE;
 
 public class Player {
+
     private final String name;
     private int lives;
     private ArrayList<BlueCard> blueCards;
-
     private ArrayList<Card> cards;
+
     public Player(String name) {
         this.cards = new ArrayList<>();
         this.blueCards = new ArrayList<>();
         this.name = name;
         this.lives = 4;
-    }
-    public void setBlueCards(ArrayList<BlueCard> blueCards) {
-        this.blueCards = blueCards;
     }
 
     public String getName() {
@@ -34,16 +32,12 @@ public class Player {
         return lives;
     }
 
-    public void setLives(int lives) {
-        this.lives = lives;
+    public ArrayList<Card> getCards() {
+        return cards;
     }
 
     public void setCards(ArrayList<Card> cards) {
         this.cards = cards;
-    }
-
-    public ArrayList<Card> getCards() {
-        return cards;
     }
 
     public boolean isActive() {
@@ -58,8 +52,8 @@ public class Player {
         this.cards.remove(card);
     }
 
-    public void removeBlueCard(int card) {
-        this.blueCards.remove(card);
+    public void removeBlueCard(int indexCard) {
+        this.blueCards.remove(indexCard);
         // add to board gamecard
     }
 
@@ -88,32 +82,20 @@ public class Player {
         return blueCards;
     }
 
-    //добавление толоько одной карты в наш арей лист синих карт
     public void addBlueCard(BlueCard blueCard) {
         this.blueCards.add(blueCard);
     }
 
-    private String printBlueCards() {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < blueCards.size(); i++) {
-            if (i == blueCards.size() - 1) {
-                sb.append("|" + blueCards.get(i).getName() + "|");
+    public String printCardsOnHand() { // делало проблемы, потому переписала на форич
+        StringBuffer st = new StringBuffer();
+        for (int i = 0; i < this.getCards().size(); i++) {
+            if (i == this.getCards().size() - 1) {
+                st.append(i + 1).append(" - ").append(this.getCards().get(i).getName());
+            } else {
+                st.append(i + 1).append(" - ").append(this.getCards().get(i).getName()).append(" | ");
             }
-            sb.append("|").append(blueCards.get(i).getName());
         }
-        return sb.toString();
-    }
-
-    public String printCardsOnHand() {
-        return cards.stream().map((e) -> {
-            StringBuffer st = new StringBuffer();
-            if(cards.get(cards.size()-1).equals(e)){
-                st.append(cards.indexOf(e) + 1).append(" - ").append(e.getName());
-            }else {
-                st.append(cards.indexOf(e) + 1).append(" - ").append(e.getName()).append("| ");
-            }
-            return st;
-        }).collect(Collectors.joining());
+        return st.toString();
     }
 
     @Override
@@ -128,8 +110,7 @@ public class Player {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return lives == player.lives && name.equals(player.name) && blueCards.equals(player.blueCards)
-                && cards.equals(player.cards);
+        return lives == player.lives && name.equals(player.name) && blueCards.equals(player.blueCards) && cards.equals(player.cards);
     }
 
     @Override
@@ -139,5 +120,14 @@ public class Player {
 
     public void printDead() {
         System.out.println("\n" + this.getName() + " ARE DEAD... 💀\n");
+    }
+
+    public boolean checkDuplicate(Card card) {
+        for (Card c : this.getBlueCards()) {
+            if (card.equals(c)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
