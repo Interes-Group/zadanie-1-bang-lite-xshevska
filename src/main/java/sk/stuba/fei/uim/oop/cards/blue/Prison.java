@@ -13,7 +13,6 @@ public class Prison extends BlueCard {
     @Override
     public void playCard(Player player) {
         super.playCard(player);
-
         player.addBlueCard(this);
     }
 }

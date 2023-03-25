@@ -2,12 +2,8 @@ package sk.stuba.fei.uim.oop.bang;
 
 import sk.stuba.fei.uim.oop.board.Board;
 import sk.stuba.fei.uim.oop.cards.Card;
-import sk.stuba.fei.uim.oop.cards.blue.Barrel;
-import sk.stuba.fei.uim.oop.cards.blue.BlueCard;
 import sk.stuba.fei.uim.oop.cards.blue.Dynamite;
 import sk.stuba.fei.uim.oop.cards.blue.Prison;
-import sk.stuba.fei.uim.oop.cards.brown.Bang;
-import sk.stuba.fei.uim.oop.cards.brown.Beer;
 import sk.stuba.fei.uim.oop.cards.brown.Missed;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
@@ -83,6 +79,7 @@ public class BangGame {
             System.out.println("--- " + activePlayer.getName() + "'s TURN ---" + ANSI_PURPLE);
             System.out.println(activePlayer);
             this.board.printPlayers();
+
 
             while(true){
                 int numberCard = pickCard(activePlayer);
