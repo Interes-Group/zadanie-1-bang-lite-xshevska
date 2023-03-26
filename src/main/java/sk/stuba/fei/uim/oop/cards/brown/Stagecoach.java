@@ -14,13 +14,13 @@ public class Stagecoach extends Card {
     @Override
     public void playCard(Player player) {
         super.playCard(player);
-        if(this.board.getGameCards().size() < 3){
-            System.out.println("You can't play " + this.getName() + " right now.\nPlay with another card.");
+        if (this.board.getGameCards().size() < 3) {
+            System.out.println("You can't play " + this.getName() + " right now.\nPlease choose another card.");
             player.addCard(this);
-        }else {
+        } else {
             this.board.pullTwoCards(player);
             this.board.addDiscardingDeckCard(this);
-            System.out.println("Two cards are pulled to " + player.getName());
+            System.out.println("Two cards are pulled to " + player.getName() + ".");
         }
     }
 }

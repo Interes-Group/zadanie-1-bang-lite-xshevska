@@ -23,23 +23,6 @@ public abstract class Card {
         return name;
     }
 
-    @Override
-    public String toString() {
-        return "Card name is " + name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Card card = (Card) o;
-        return Objects.equals(name, card.name) && Objects.equals(board, card.board);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, board);
-    }
 
     private int setTarget() {
         int victim;
@@ -63,6 +46,24 @@ public abstract class Card {
             playNumber = this.setTarget();
         }
         return playNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Card name is " + name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return Objects.equals(name, card.name) && Objects.equals(board, card.board);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, board);
     }
 
 }

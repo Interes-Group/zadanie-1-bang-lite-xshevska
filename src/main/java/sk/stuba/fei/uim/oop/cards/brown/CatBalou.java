@@ -20,7 +20,7 @@ public class CatBalou extends Card {
             typeCard = ZKlavesnice.readInt("*** Which type of card you want to chose to remove " + "from Player : ***");
             if (typeCard < 1 || typeCard > 2) {
                 System.out.println(" !!! You enter wrong number. Try Again! !!! ");
-            } else if ((typeCard == 1 && player.getBlueCards().isEmpty()) || (typeCard == 2 && player.getCards().isEmpty())) { //check if player has that cards.
+            } else if ((typeCard == 1 && player.getBlueCards().isEmpty()) || (typeCard == 2 && player.getCards().isEmpty())) {
                 System.out.println(" !!! Player don't have any cards to remove from table !!! ");
             } else {
                 break;
@@ -51,11 +51,10 @@ public class CatBalou extends Card {
     @Override
     public void playCard(Player player) {
         super.playCard(player);
-        // вызываю функцию для выбора игрока на которого будем стрелять
         int playNumber = this.getPlayerNumber(player);
 
-        if(this.board.getPlayers()[playNumber].getCards().size() == 0 &&
-                this.board.getPlayers()[playNumber].getBlueCards().size() == 0){
+        if (this.board.getPlayers()[playNumber].getCards().size() == 0 &&
+                this.board.getPlayers()[playNumber].getBlueCards().size() == 0) {
             System.out.println("Sorry, " + player.getName() + " don't have any card right now.");
             System.out.println("This card cannot be played");
             player.addCard(this);
@@ -63,9 +62,7 @@ public class CatBalou extends Card {
         }
 
         Player targetPlayer = this.board.getPlayers()[playNumber];
-        // check which type of cards you want to remove from player!
         boolean cardOnTable = this.choseTypeOfCardToRemoveFromPlayer(targetPlayer);
-        //remove that card!
         this.deleteRandomCardFromPlayer(targetPlayer, cardOnTable);
     }
 }

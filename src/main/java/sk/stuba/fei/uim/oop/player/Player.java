@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
-import static sk.stuba.fei.uim.oop.bang.BangGame.ANSI_BLUE;
 
 public class Player {
-
-    private final String name;
+    public static final String ANSI_BLUE = "\u001B[34m";
+    private String name;
     private int lives;
     private ArrayList<BlueCard> blueCards;
     private ArrayList<Card> cards;
@@ -144,7 +143,7 @@ public class Player {
 
     public boolean checkPrisoner() {
         Card prison = this.getBlueCards().stream().filter(card -> card instanceof Prison).findAny().orElse(null);
-        System.out.println("checkPrisoner " + this.getName() +": " + prison + " | " + (prison != null));
+        System.out.println("checkPrisoner " + this.getName() + ": " + prison + " | " + (prison != null));
         return prison != null;
     }
 }
