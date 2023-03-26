@@ -39,7 +39,7 @@ public class Bang extends Card {
         } else {
             targetPlayer.removeLife();
             System.out.println("Player " + targetPlayer.getName() + " lost his/her live.. -💔x1" + "  ❤x" + targetPlayer.getLives());
-            if (targetPlayer.getLives() == 0) {
+            if (targetPlayer.getLives() <= 0) {
                 targetPlayer.printDead();
             }
             this.board.addGameCard(this);

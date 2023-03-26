@@ -44,7 +44,8 @@ public class Board {
         ArrayList<Card> cards = new ArrayList<>();
         IntStream.range(0, 2).forEach(i -> cards.add(new Barrel(this)));
 //        IntStream.range(0, 20).forEach(i -> cards.add(new Barrel(this)));
-        cards.add(new Dynamite(this));
+//        cards.add(new Dynamite(this));
+        IntStream.range(0, 20).forEach(i -> cards.add(new Dynamite(this)));
         IntStream.range(0, 3).forEach(i -> cards.add(new Prison(this)));
 //        IntStream.range(0, 20).forEach(i -> cards.add(new Prison(this)));
         IntStream.range(0, 30).forEach(i -> cards.add(new Bang(this)));
@@ -140,12 +141,6 @@ public class Board {
             }
         }
         return 0;
-    }
-
-    public boolean checkPrisoner(Player player) {
-        Card prison = player.getBlueCards().stream().filter(card -> card instanceof Prison).findAny().orElse(null);
-        System.out.println("checkPrisoner " + player.getName() +": " + prison + " | " + (prison != null));
-        return prison != null;
     }
 
     public int findPrison(Player player) {

@@ -1,7 +1,10 @@
 package sk.stuba.fei.uim.oop.player;
 
+import sk.stuba.fei.uim.oop.board.Board;
 import sk.stuba.fei.uim.oop.cards.Card;
 import sk.stuba.fei.uim.oop.cards.blue.BlueCard;
+import sk.stuba.fei.uim.oop.cards.blue.Dynamite;
+import sk.stuba.fei.uim.oop.cards.blue.Prison;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -129,5 +132,21 @@ public class Player {
             }
         }
         return false;
+    }
+
+    public int getIndexOfDynamite() {
+        Card prison = this.getBlueCards().stream().filter(card -> card instanceof Dynamite).findAny().orElse(null);
+        for (int i = 0; i < this.getBlueCards().size(); i++) {
+            if (this.getBlueCards().get(i) instanceof Dynamite) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public boolean checkPrisoner() {
+        Card prison = this.getBlueCards().stream().filter(card -> card instanceof Prison).findAny().orElse(null);
+        System.out.println("checkPrisoner " + this.getName() +": " + prison + " | " + (prison != null));
+        return prison != null;
     }
 }

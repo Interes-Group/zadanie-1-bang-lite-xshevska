@@ -53,6 +53,7 @@ public abstract class Card {
         }
         return victim;
     }
+
     protected int getPlayerNumber(Player player) {
         int playNumber = this.setTarget();
 
@@ -63,4 +64,5 @@ public abstract class Card {
         }
         return playNumber;
     }
+
 }

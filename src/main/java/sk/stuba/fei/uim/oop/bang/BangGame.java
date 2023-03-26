@@ -2,6 +2,7 @@ package sk.stuba.fei.uim.oop.bang;
 
 import sk.stuba.fei.uim.oop.board.Board;
 import sk.stuba.fei.uim.oop.cards.Card;
+import sk.stuba.fei.uim.oop.cards.blue.BlueCard;
 import sk.stuba.fei.uim.oop.cards.blue.Dynamite;
 import sk.stuba.fei.uim.oop.cards.blue.Prison;
 import sk.stuba.fei.uim.oop.cards.brown.Missed;
@@ -9,6 +10,7 @@ import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 public class BangGame {
     public static final String ANSI_BLUE = "\u001B[34m";
@@ -55,21 +57,40 @@ public class BangGame {
                 continue;
             }
 
+            // проверь карту динамит, есть ли она на доске
+            Dynamite dynamite = new Dynamite(this.board);
+//            dynamite.getActionOfDynamite();
 
-            // проверь в тюрме ли он текущий игрок
-            // если да, то удали карту Тюрма от него и пускай ходит дальше
-            if (this.board.checkPrisoner(activePlayer)) {
-                if (activePlayer.getBlueCards().get(0).checkEffect(activePlayer)) {
-                    // удали карту тюрма от игрока
+                int dynamiteIndex = activePlayer.getIndexOfDynamite();
+                if(dynamiteIndex != -1) {
+                    if(dynamite.checkEffect(activePlayer)){
+                        dynamite.takeLifeFromPlayer(activePlayer, dynamiteIndex);
+                        if(!activePlayer.isActive()) {
+                            ArrayList<Card> removedCards = activePlayer.removeCardsFromHand();
+                            for (Card card : removedCards) {
+                                this.board.addGameCard(card);
+                            }
+                            this.incrementCounter();
+                            continue;
+                        }
+                    } else {
+                        dynamite.moveDynamiteToPreviousPlayer(activePlayer, dynamiteIndex);
+                    }
+
+                } else if (activePlayer.checkPrisoner()) {
+                    // проверь в тюрме ли он текущий игрок
+                    // если да, то удали карту Тюрма от него и пускай ходит дальше
+                    if (activePlayer.getBlueCards().get(0).checkEffect(activePlayer)) {
+                        // удали карту тюрма от игрока
+                        activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
+                        // add to gameCard
+                        this.board.addGameCard(new Prison(this.board));
+                        this.incrementCounter();
+                        continue;
+                    }
                     activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
-                    // add to gameCard
                     this.board.addGameCard(new Prison(this.board));
-                    this.incrementCounter();
-                    continue;
                 }
-                activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
-                this.board.addGameCard(new Prison(this.board));
-            }
 
 
             System.out.println("Player cards on hand: " + activePlayer.printCardsOnHand());
@@ -81,9 +102,9 @@ public class BangGame {
             this.board.printPlayers();
 
 
-            while(true){
+            while (true) {
                 int numberCard = pickCard(activePlayer);
-                if(numberCard == -1) {
+                if (numberCard == -1) {
                     System.out.println("Player want to SKIP his move.");
                     break;
                 } else {
@@ -113,12 +134,12 @@ public class BangGame {
 
         if (selectedCard instanceof Missed) {
             System.out.println("This card cannot be played!");
-        } else if(selectedCard instanceof  Dynamite || selectedCard instanceof Prison){
+        } else if (selectedCard instanceof Prison) {
             // проверь на кого ты можешь поставить и выпиши их
             // для дальнейшего выбора.
             ArrayList<Player> playable = this.checkPlayersToAction(activePlayer, selectedCard);
             System.out.println("list of players: ");
-            playable.stream().forEach((e)->{
+            playable.stream().forEach((e) -> {
                 System.out.print(e.getName() + " ");
             });
             if (playable.size() != 0) {
@@ -149,7 +170,7 @@ public class BangGame {
             numberOfTargetPlayer = ZKlavesnice.readInt("*** Chose player ***") - 1;
             if (numberOfTargetPlayer < 0 || numberOfTargetPlayer > playable.size() - 1) {
                 System.out.println(" !!! You enter wrong number of card. Try Again! !!! ");
-            }else {
+            } else {
                 break;
             }
         }
@@ -191,7 +212,7 @@ public class BangGame {
         ArrayList<Player> playablePlayers = new ArrayList<>();
         for (Player p : this.board.getPlayers()) {
             if (p.isActive() && !p.equals(activePlayer)) {
-                if(!p.checkDuplicate(selectedCard)) {
+                if (!p.checkDuplicate(selectedCard)) {
                     playablePlayers.add(p);
                 }
             }
