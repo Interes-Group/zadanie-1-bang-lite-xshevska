@@ -17,7 +17,7 @@ public class Indians extends Card {
         System.out.println("You chose Indians! Prepare for GREAT BATTLE 😈 + 🔫");
         for (Player p : this.board.getPlayers()) {
             boolean bang = false;
-            if (!p.equals(player)) {
+            if (!p.equals(player) && p.isActive()) {
                 for (Card c : p.getCards()) {
                     if (c instanceof Bang) {
                         p.removeCard(c);

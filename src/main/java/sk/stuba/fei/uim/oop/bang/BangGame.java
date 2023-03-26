@@ -149,7 +149,7 @@ public class BangGame {
             });
             if (playable.size() != 0) {
                 activePlayer.removeCard(numberCard);
-                this.playCard(playable, selectedCard);
+                this.prepareToPlayPrisonCard(playable, selectedCard);
             } else {
                 System.out.println("Right now you don't have an option of a player to go to.");
                 System.out.println("Try another card.");
@@ -161,7 +161,7 @@ public class BangGame {
         }
     }
 
-    private void playCard(ArrayList<Player> playable, Card selectCard) {
+    private void prepareToPlayPrisonCard(ArrayList<Player> playable, Card selectCard) {
         System.out.println("--- The players you can look up to are:");
         // проверь игроков, если их нету, то пропусти ход и выбери другую карту
         // в жругом случаи просто делай дальше

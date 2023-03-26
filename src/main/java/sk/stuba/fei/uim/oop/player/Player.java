@@ -1,6 +1,5 @@
 package sk.stuba.fei.uim.oop.player;
 
-import sk.stuba.fei.uim.oop.board.Board;
 import sk.stuba.fei.uim.oop.cards.Card;
 import sk.stuba.fei.uim.oop.cards.blue.BlueCard;
 import sk.stuba.fei.uim.oop.cards.blue.Dynamite;
@@ -9,7 +8,6 @@ import sk.stuba.fei.uim.oop.cards.blue.Prison;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static sk.stuba.fei.uim.oop.bang.BangGame.ANSI_BLUE;
 
@@ -135,7 +133,7 @@ public class Player {
     }
 
     public int getIndexOfDynamite() {
-        Card prison = this.getBlueCards().stream().filter(card -> card instanceof Dynamite).findAny().orElse(null);
+        this.getBlueCards().stream().filter(card -> card instanceof Dynamite).findAny().orElse(null);
         for (int i = 0; i < this.getBlueCards().size(); i++) {
             if (this.getBlueCards().get(i) instanceof Dynamite) {
                 return i;
