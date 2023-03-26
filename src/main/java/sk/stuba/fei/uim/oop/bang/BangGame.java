@@ -44,6 +44,8 @@ public class BangGame {
 
     private void startGame() {
         System.out.println("--- GAME STARTED ---");
+        Dynamite dynamite = new Dynamite(this.board);
+        Prison prison = new Prison(this.board);
 
         while (this.getNumberOfActivePlayers() > 1) {
             Player activePlayer = this.players[this.currentPlayer];
@@ -57,9 +59,6 @@ public class BangGame {
                 this.incrementCounter();
                 continue;
             }
-
-            Dynamite dynamite = new Dynamite(this.board);
-            Prison prison = new Prison(this.board);
 
             int dynamiteIndex = activePlayer.getIndexOfDynamite();
             if (dynamiteIndex != -1) {
