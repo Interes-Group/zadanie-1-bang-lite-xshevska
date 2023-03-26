@@ -30,6 +30,8 @@ public class Bang extends Card {
             check = ((Barrel) barrel).checkEffect(player);
             if (check) {
                 System.out.println("The player was protected from the Bang card by the Barrel card! 💗🎴");
+            } else {
+                System.out.println("Unfortunately, the player Barrel did not defend! 😿");
             }
         }
 

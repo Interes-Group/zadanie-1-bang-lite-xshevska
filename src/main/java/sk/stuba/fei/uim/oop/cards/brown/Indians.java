@@ -29,11 +29,9 @@ public class Indians extends Card {
                 }
                 if (!bang) {
                     p.removeLife();
+                    System.out.println(p.getName() + " has not any Bang card.. He lose his LIFE CELL 😈");
                     if (p.getLives() == 0) {
-                        System.out.println(p.getName() + " has not any Bang card.. He lose his LIFE CELL 😈");
                         p.printDead();
-                    } else {
-                        System.out.println(p.getName() + " has not any Bang card.. He lose his LIFE CELL 😈");
                     }
                 }
             }

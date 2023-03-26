@@ -50,7 +50,7 @@ public abstract class Card {
 
     @Override
     public String toString() {
-        return "Card name is " + name;
+        return "Card name is " + getName();
     }
 
     @Override

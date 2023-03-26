@@ -12,11 +12,10 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class Board {
-    public static final String ANSI_GREEN = "\u001B[32m";
-    private ArrayList<Card> gameCards;
-    private Player[] players;
 
+public class Board {
+    private Player[] players;
+    private ArrayList<Card> gameCards;
     private ArrayList<Card> discardingDeck;
 
     public Board(Player[] players) {
@@ -40,12 +39,11 @@ public class Board {
 
     private ArrayList<Card> creatingCards() {
         ArrayList<Card> cards = new ArrayList<>();
-        IntStream.range(0, 2).forEach(i -> cards.add(new Barrel(this)));
 
-        //cards.add(new Dynamite(this));
-        IntStream.range(0, 20).forEach(i -> cards.add(new Dynamite(this)));
-        IntStream.range(0, 20).forEach(i -> cards.add(new Prison(this)));
+        IntStream.range(0, 20).forEach(i -> cards.add(new Barrel(this)));
 
+        cards.add(new Dynamite(this));
+        IntStream.range(0, 3).forEach(i -> cards.add(new Prison(this)));
         IntStream.range(0, 30).forEach(i -> cards.add(new Bang(this)));
         IntStream.range(0, 15).forEach(i -> cards.add(new Missed(this)));
         IntStream.range(0, 8).forEach(i -> cards.add(new Beer(this)));
@@ -63,7 +61,7 @@ public class Board {
             if (players[i].isActive()) {
                 System.out.println("Id: " + (i + 1) + " - " + players[i].getName() + " * " + "❤x" + players[i].getLives() + " * " + "[" + players[i].getBlueCards().stream().map((e) -> {
                     StringBuffer st = new StringBuffer();
-                    st.append(e.getName()).append(", ");
+                    st.append(e.getName()).append(" | ");
                     return st;
                 }).collect(Collectors.joining()) + "]" +
                         "\n ALL CARDS: [" + players[i].getCards().stream().map((e) -> {
@@ -88,23 +86,27 @@ public class Board {
     }
 
 
-    public int sizeOfGameCards() {
-        return this.gameCards.size();
-    }
-
     public void pullTwoCards(Player player) {
         for (int i = 0; i < 2; i++) {
             player.addCard(this.gameCards.remove(0));
         }
-        System.out.println(ANSI_GREEN + player.getName() + " pull two cards.");
+        System.out.println(player.getName() + " pull two cards.");
     }
 
     public Player[] getPlayers() {
         return players;
     }
 
+    public ArrayList<Card> getGameCards() {
+        return gameCards;
+    }
+
+
+    public void addDiscardingDeckCard(Card card) {
+        this.discardingDeck.add(card);
+    }
+
     public void controlHartsAndCards(Player player) {
-        //BBB
         int cardForDeleting;
 
         if (player.getLives() < player.getCards().size()) {
@@ -133,29 +135,6 @@ public class Board {
             }
         }
         return 0;
-    }
-
-    public int findPrison(Player player) {
-        int indexCart = -1;
-        for (int i = 0; i < player.getBlueCards().size(); i++) {
-            if (player.getBlueCards().get(i) instanceof Prison) {
-                indexCart = i;
-                break;
-            }
-        }
-        return indexCart;
-    }
-
-    public ArrayList<Card> getGameCards() {
-        return gameCards;
-    }
-
-    public ArrayList<Card> getDiscardingDeck() {
-        return discardingDeck;
-    }
-
-    public void addDiscardingDeckCard(Card card) {
-        this.discardingDeck.add(card);
     }
 
 

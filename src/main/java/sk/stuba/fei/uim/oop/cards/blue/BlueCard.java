@@ -21,7 +21,7 @@ public class BlueCard extends Card {
     protected void playBlueCard(Player player) {
         if (player.checkDuplicate(this)) {
             System.out.println(player.getName() + " already have duplicate of card " + this.getName());
-            System.out.println("Play with another card.");
+            System.out.println("Play with another card!");
             player.addCard(this);
         } else {
             System.out.println(this.getName() + " going into " + player.getName() + "' blue field");

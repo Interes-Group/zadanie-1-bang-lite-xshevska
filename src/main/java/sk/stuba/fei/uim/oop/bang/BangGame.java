@@ -81,20 +81,15 @@ public class BangGame {
 
             if (activePlayer.checkPrisoner()) {
                 if (!prison.checkEffect(activePlayer)) {
-                    System.out.println("The player " + activePlayer.getName() + " remains in prison and misses his turn! 🥲");
-                    activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
-                    this.board.addDiscardingDeckCard(new Prison(this.board));
+                    System.out.println("The player " + activePlayer.getName() + " remains in prison and misses his turn! 😢");
                     this.incrementCounter();
                     continue;
                 } else {
-                    System.out.println("A player escapes from prison! 🏃‍" + activePlayer.getName());
-                    activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
-                    this.board.addDiscardingDeckCard(new Prison(this.board));
+                    System.out.println("A player " + activePlayer.getName() + " escapes from prison! 🏃 ");
                 }
-
             }
 
-
+            System.out.println("------------------");
             System.out.println("Player cards on hand: " + "[" + activePlayer.printCardsOnHand() + "]");
             this.board.pullTwoCards(activePlayer);
 
@@ -122,7 +117,6 @@ public class BangGame {
                 }
             }
             this.incrementCounter();
-            System.out.println("--- must check for the harts and cards of players --- ");
             this.board.controlHartsAndCards(activePlayer);
         }
         System.out.println("--- GAME FINISHED ---");

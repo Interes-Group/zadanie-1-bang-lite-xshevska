@@ -35,14 +35,14 @@ public class CatBalou extends Card {
             max = player.getBlueCards().size() - 1;
             randCard = (int) (Math.random() * (max));
             this.board.getGameCards().add(player.getBlueCards().get(randCard));
-            System.out.println("Card " + player.getBlueCards().get(randCard) + " will be removed from " +
+            System.out.println(player.getBlueCards().get(randCard).getName() + " will be removed from " +
                     player.getName());
             player.removeBlueCard(randCard);
         } else {
             max = player.getCards().size() - 1;
             randCard = (int) (Math.random() * (max));
             this.board.getGameCards().add(player.getCards().get(randCard));
-            System.out.println("Card " + player.getCards().get(randCard) + " will be removed from " +
+            System.out.println(player.getCards().get(randCard) + " will be removed from " +
                     player.getName());
             player.removeCard(randCard);
         }

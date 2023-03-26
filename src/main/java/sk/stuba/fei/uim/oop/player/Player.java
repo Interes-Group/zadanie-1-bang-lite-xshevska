@@ -40,6 +40,10 @@ public class Player {
         this.cards = cards;
     }
 
+    public ArrayList<BlueCard> getBlueCards() {
+        return blueCards;
+    }
+
     public boolean isActive() {
         return this.lives > 0;
     }
@@ -84,9 +88,6 @@ public class Player {
         this.lives++;
     }
 
-    public ArrayList<BlueCard> getBlueCards() {
-        return blueCards;
-    }
 
     public void addBlueCard(BlueCard blueCard) {
         this.blueCards.add(blueCard);
@@ -102,24 +103,6 @@ public class Player {
             }
         }
         return st.toString();
-    }
-
-    @Override
-    public String toString() {
-        return "Name: " + name + " " + " ❤x" + lives + ANSI_BLUE + "\nCARDS ON HAND: [" + printCardsOnHand() + "]";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Player player = (Player) o;
-        return lives == player.lives && name.equals(player.name) && blueCards.equals(player.blueCards) && cards.equals(player.cards);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, lives, blueCards, cards);
     }
 
     public void printDead() {
@@ -146,7 +129,24 @@ public class Player {
 
     public boolean checkPrisoner() {
         Card prison = this.getBlueCards().stream().filter(card -> card instanceof Prison).findAny().orElse(null);
-        System.out.println("checkPrisoner " + this.getName() + ": " + prison + " | " + (prison != null));
         return prison != null;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + " " + " ❤x" + lives + ANSI_BLUE + "\nCARDS ON HAND: [" + printCardsOnHand() + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return lives == player.lives && name.equals(player.name) && blueCards.equals(player.blueCards) && cards.equals(player.cards);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, lives, blueCards, cards);
     }
 }
