@@ -3,8 +3,8 @@ package sk.stuba.fei.uim.oop.cards.blue;
 import sk.stuba.fei.uim.oop.board.Board;
 import sk.stuba.fei.uim.oop.player.Player;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 public class Dynamite extends BlueCard {
     private static final String CARD_NAME = "Dynamite";
@@ -16,9 +16,7 @@ public class Dynamite extends BlueCard {
     public void takeLifeFromPlayer(Player player, int index) {
         // if dynamite make BOOM -> delete it and add to deck of card
         System.out.println(this.getName() + " will do BOOM! to " + player.getName());
-        player.removeLife();
-        player.removeLife();
-        player.removeLife();
+        IntStream.range(0, 3).forEach(i -> player.removeLife());
         System.out.println("Player " + player.getName() + " lost his/her live.. -💔x3" + "  ❤x" + player.getLives());
         if (player.getLives() <= 0) {
             player.printDead();
@@ -41,12 +39,11 @@ public class Dynamite extends BlueCard {
         previousPlayer.addBlueCard(this); // this
     }
 
+    //функция активного игрока у которого нет в голубом поле Динамит!
     public Player getPreviousActivePlayer(Player player) {
-        this.board.getGameIndexOfCurrentPlayer(player);
-
         ArrayList<Player> activePlayers = new ArrayList<>();
         for (Player p : this.board.getPlayers()) {
-            if(p.isActive()) {
+            if (p.isActive() && p.hasDynamite()) {
                 activePlayers.add(p);
             }
         }
@@ -54,7 +51,7 @@ public class Dynamite extends BlueCard {
         if (currentIndex > 0) {
             return activePlayers.get(currentIndex - 1);
         } else {
-            return activePlayers.get(activePlayers.size()-1);
+            return activePlayers.get(activePlayers.size() - 1);
         }
     }
 

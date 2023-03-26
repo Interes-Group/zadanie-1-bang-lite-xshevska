@@ -44,6 +44,13 @@ public class Player {
         return this.lives > 0;
     }
 
+    public boolean hasDynamite() {
+        Card dynamite = this.getBlueCards().stream()
+                .filter(card -> card instanceof Dynamite).findAny().orElse(null);
+        return dynamite == null;
+    }
+
+
     public void addCard(Card card) {
         cards.add(card);
     }

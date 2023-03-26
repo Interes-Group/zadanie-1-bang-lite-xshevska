@@ -130,6 +130,7 @@ public class Board {
         }
     }
 
+    //BBB
     public int getGameIndexOfCurrentPlayer(Player player) {
         for (int i = 0; i < this.players.length; i++) {
             if (players[i].equals(player)) {

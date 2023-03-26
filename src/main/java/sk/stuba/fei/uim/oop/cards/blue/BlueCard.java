@@ -7,7 +7,6 @@ import sk.stuba.fei.uim.oop.player.Player;
 import java.util.Random;
 
 public class BlueCard extends Card {
-
     protected Random random;
 
     public BlueCard(String name, Board board) {
@@ -21,7 +20,7 @@ public class BlueCard extends Card {
 
     public boolean checkDuplicate(Player player, Card card) {
         for (Card c : player.getBlueCards()) {
-            if(c.equals(card)){
+            if (c.equals(card)) {
                 return true;
             }
         }
