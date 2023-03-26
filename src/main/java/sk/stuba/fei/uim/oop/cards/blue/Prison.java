@@ -16,8 +16,4 @@ public class Prison extends BlueCard {
         player.addBlueCard(this);
     }
 
-
-
-
-
 }

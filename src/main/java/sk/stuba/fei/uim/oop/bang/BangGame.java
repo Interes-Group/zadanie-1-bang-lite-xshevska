@@ -46,9 +46,6 @@ public class BangGame {
         System.out.println("--- GAME STARTED ---");
 
         while (this.getNumberOfActivePlayers() > 1) {
-            System.out.println("GAME CARDS: " + this.board.sizeOfGameCards());
-            System.out.println("GAME DISCARD CARDS: " + this.board.getDiscardingDeck().size());
-
             Player activePlayer = this.players[this.currentPlayer];
             this.board.mergeCardDecks();
 
@@ -61,11 +58,9 @@ public class BangGame {
                 continue;
             }
 
-
-            // проверь карту динамит, есть ли она на доске
             Dynamite dynamite = new Dynamite(this.board);
-            // ЭТО ТО ЧТО ДОБАВИЛ
             Prison prison = new Prison(this.board);
+
             int dynamiteIndex = activePlayer.getIndexOfDynamite();
             if (dynamiteIndex != -1) {
                 if (dynamite.checkEffect(activePlayer)) {
@@ -85,16 +80,14 @@ public class BangGame {
             }
 
             if (activePlayer.checkPrisoner()) {
-                //если вернет false
                 if (!prison.checkEffect(activePlayer)) {
-                    // удали карту тюрма от игрока
-                    System.out.println("Игрок остается в тюрьмы!");
+                    System.out.println("The player " + activePlayer.getName() + " remains in prison and misses his turn! 🥲");
                     activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
                     this.board.addDiscardingDeckCard(new Prison(this.board));
                     this.incrementCounter();
                     continue;
                 } else {
-                    System.out.println("Игрок сбегает из тюрьмы!" + activePlayer.getName());
+                    System.out.println("A player escapes from prison! 🏃‍" + activePlayer.getName());
                     activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
                     this.board.addDiscardingDeckCard(new Prison(this.board));
                 }
@@ -102,15 +95,14 @@ public class BangGame {
             }
 
 
-            System.out.println("Player cards on hand: " + activePlayer.printCardsOnHand());
+            System.out.println("Player cards on hand: " + "[" + activePlayer.printCardsOnHand() + "]");
             this.board.pullTwoCards(activePlayer);
-            System.out.println("Player pulled two cards: " + activePlayer.printCardsOnHand());
 
             System.out.println("--- " + activePlayer.getName() + "'s TURN ---" + ANSI_PURPLE);
             System.out.println(activePlayer);
             this.board.printPlayers();
 
-            // вытяни в функцию
+
             while (true) {
                 if (getNumberOfActivePlayers() == 1) {
                     System.out.println("🎈 This game was won by the player! 🎈 : " + activePlayer.getName() + " 🥇");
@@ -130,14 +122,8 @@ public class BangGame {
                 }
             }
             this.incrementCounter();
-
-
-            // пройтись по игрокy и удалить рандомно столько карт, чтобы осталось у нeuj какрт как и жизней
-            // если 4 жизни у него, то оставь у игрока 4 максимум карт.
-            System.out.println("This is NewCircle of the GAME");
             System.out.println("--- must check for the harts and cards of players --- ");
-            this.board.controllHartsAndCards(activePlayer);
-            System.out.println("Game cards total are: " + this.board.getGameCards().size());
+            this.board.controlHartsAndCards(activePlayer);
         }
         System.out.println("--- GAME FINISHED ---");
     }
@@ -148,13 +134,11 @@ public class BangGame {
         if (selectedCard instanceof Missed) {
             System.out.println("This card cannot be played!");
         } else if (selectedCard instanceof Prison) {
-            // проверь на кого ты можешь поставить и выпиши их
-            // для дальнейшего выбора.
             ArrayList<Player> playable = this.checkPlayersToAction(activePlayer, selectedCard);
+
             System.out.println("list of players: ");
-            playable.stream().forEach((e) -> {
-                System.out.print(e.getName() + " ");
-            });
+            playable.forEach((e) -> System.out.print(e.getName() + " " + "BBB"));
+
             if (playable.size() != 0) {
                 activePlayer.removeCard(numberCard);
                 this.prepareToPlayPrisonCard(playable, selectedCard);
@@ -163,7 +147,6 @@ public class BangGame {
                 System.out.println("Try another card.");
             }
         } else {
-            // вызываю функцию для выбора игрока на которого будем стрелять
             activePlayer.removeCard(numberCard);
             selectedCard.playCard(activePlayer);
         }
@@ -171,8 +154,6 @@ public class BangGame {
 
     private void prepareToPlayPrisonCard(ArrayList<Player> playable, Card selectCard) {
         System.out.println("--- The players you can look up to are:");
-        // проверь игроков, если их нету, то пропусти ход и выбери другую карту
-        // в жругом случаи просто делай дальше
         int i = 1;
         for (Player p : playable) {
             System.out.println(" - " + i + " " + p.getName());
@@ -187,7 +168,6 @@ public class BangGame {
                 break;
             }
         }
-        // игрок выбирает номер игрока
         selectCard.playCard(playable.get(numberOfTargetPlayer));
 
     }
@@ -195,7 +175,7 @@ public class BangGame {
     private int pickCard(Player activePlayer) {
         int numberCard;
         while (true) {
-            System.out.println("Enter number \'0\' to skip turn.");
+            System.out.println("Enter number '0' to skip turn.");
             numberCard = ZKlavesnice.readInt("*** Enter number of card you want to PLAY: ***") - 1;
             if (numberCard < -1 || numberCard > activePlayer.getCards().size() - 1) {
                 System.out.println(" !!! You enter wrong number of card. Try Again! !!! ");

@@ -18,15 +18,6 @@ public class BlueCard extends Card {
         return this.random.nextInt(4) == 3;
     }
 
-    public boolean checkDuplicate(Player player, Card card) {
-        for (Card c : player.getBlueCards()) {
-            if (c.equals(card)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     protected void playBlueCard(Player player) {
         if (player.checkDuplicate(this)) {
             System.out.println(player.getName() + " already have duplicate of card " + this.getName());

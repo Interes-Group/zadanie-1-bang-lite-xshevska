@@ -61,7 +61,6 @@ public class Player {
 
     public void removeBlueCard(int indexCard) {
         this.blueCards.remove(indexCard);
-        // add to board gamecard
     }
 
     public void removeCard(Card card) {
@@ -93,8 +92,8 @@ public class Player {
         this.blueCards.add(blueCard);
     }
 
-    public String printCardsOnHand() { // делало проблемы, потому переписала на форич
-        StringBuffer st = new StringBuffer();
+    public String printCardsOnHand() {
+        StringBuilder st = new StringBuilder();
         for (int i = 0; i < this.getCards().size(); i++) {
             if (i == this.getCards().size() - 1) {
                 st.append(i + 1).append(" - ").append(this.getCards().get(i).getName());
@@ -107,9 +106,7 @@ public class Player {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer("Name: " + name + " " + " ❤x" + lives + ANSI_BLUE);
-        sb.append("\nCARDS ON HAND: [" + printCardsOnHand() + "]");
-        return sb.toString();
+        return "Name: " + name + " " + " ❤x" + lives + ANSI_BLUE + "\nCARDS ON HAND: [" + printCardsOnHand() + "]";
     }
 
     @Override
@@ -139,7 +136,6 @@ public class Player {
     }
 
     public int getIndexOfDynamite() {
-        this.getBlueCards().stream().filter(card -> card instanceof Dynamite).findAny().orElse(null);
         for (int i = 0; i < this.getBlueCards().size(); i++) {
             if (this.getBlueCards().get(i) instanceof Dynamite) {
                 return i;

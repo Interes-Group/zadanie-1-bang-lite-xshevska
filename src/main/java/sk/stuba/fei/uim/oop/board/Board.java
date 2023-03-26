@@ -9,7 +9,6 @@ import sk.stuba.fei.uim.oop.player.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -64,13 +63,12 @@ public class Board {
             if (players[i].isActive()) {
                 System.out.println("Id: " + (i + 1) + " - " + players[i].getName() + " * " + "❤x" + players[i].getLives() + " * " + "[" + players[i].getBlueCards().stream().map((e) -> {
                     StringBuffer st = new StringBuffer();
-                    st.append(e.getName() + ", ");
+                    st.append(e.getName()).append(", ");
                     return st;
                 }).collect(Collectors.joining()) + "]" +
-                        //тут будут все карты игрока
                         "\n ALL CARDS: [" + players[i].getCards().stream().map((e) -> {
                     StringBuffer st = new StringBuffer();
-                    st.append(e.getName() + " ");
+                    st.append(e.getName()).append(" ");
                     return st;
                 }).collect(Collectors.joining()) + "]");
             }
@@ -99,15 +97,15 @@ public class Board {
             player.addCard(this.gameCards.remove(0));
         }
         System.out.println(ANSI_GREEN + player.getName() + " pull two cards.");
-//        return  player.getName() + " pull two cards.";
     }
 
     public Player[] getPlayers() {
         return players;
     }
 
-    public void controllHartsAndCards(Player player) {
-        int cardForDeleting = 0;
+    public void controlHartsAndCards(Player player) {
+        //BBB
+        int cardForDeleting;
 
         if (player.getLives() < player.getCards().size()) {
             cardForDeleting = player.getCards().size() - player.getLives();
@@ -118,19 +116,16 @@ public class Board {
     }
 
     private void deletingCardsFromPerson(Player player, int cardsNumber) {
-        Random rand = null;
         int card;
-        // max card size = a --- min card size = 0 ---
         for (int i = 0; i < cardsNumber; i++) {
-            // rand.nextInt((max - min) + 1) + min
-            card = (int) (Math.random() * (player.getCards().size() - 0));
+            card = (int) (Math.random() * (player.getCards().size()));
             System.out.println(player.getName() + " (" + i + ") - rand card is: " + player.getCards().get(card));
             this.addDiscardingDeckCard(player.getCards().get(card));
             player.removeCard(card);
         }
     }
 
-    //BBB
+
     public int getGameIndexOfCurrentPlayer(Player player) {
         for (int i = 0; i < this.players.length; i++) {
             if (players[i].equals(player)) {
