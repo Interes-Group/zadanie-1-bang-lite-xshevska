@@ -50,7 +50,6 @@ public class BangGame {
             System.out.println("GAME DISCARD CARDS: " + this.board.getDiscardingDeck().size());
 
             Player activePlayer = this.players[this.currentPlayer];
-
             this.board.mergeCardDecks();
 
             if (!activePlayer.isActive()) {
@@ -61,6 +60,7 @@ public class BangGame {
                 this.incrementCounter();
                 continue;
             }
+
 
             // проверь карту динамит, есть ли она на доске
             Dynamite dynamite = new Dynamite(this.board);
@@ -82,7 +82,8 @@ public class BangGame {
                     dynamite.moveDynamiteToPreviousPlayer(activePlayer, dynamiteIndex);
                 }
 
-            } else if (activePlayer.checkPrisoner()) {
+            }
+            if (activePlayer.checkPrisoner()) {
                 // проверь в тюрме ли он текущий игрок
                 // если да, то удали карту Тюрма от него и пускай ходит дальше
                 if (activePlayer.getBlueCards().get(0).checkEffect(activePlayer)) {
@@ -108,6 +109,13 @@ public class BangGame {
 
             // вытяни в функцию
             while (true) {
+                //BBB
+                if (getNumberOfActivePlayers() == 1) {
+                    System.out.println("🎈 This game was won by the player! 🎈 : " + activePlayer.getName() + " 🥇");
+                    incrementCounter();
+                    break;
+                }
+
                 int numberCard = pickCard(activePlayer);
                 if (numberCard == -1) {
                     System.out.println("Player want to SKIP his move.");
@@ -130,8 +138,6 @@ public class BangGame {
             System.out.println("Game cards total are: " + this.board.getGameCards().size());
         }
         System.out.println("--- GAME FINISHED ---");
-
-
     }
 
     private void makeTurn(Player activePlayer, int numberCard) {
