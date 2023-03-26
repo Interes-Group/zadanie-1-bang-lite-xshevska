@@ -2,7 +2,6 @@ package sk.stuba.fei.uim.oop.bang;
 
 import sk.stuba.fei.uim.oop.board.Board;
 import sk.stuba.fei.uim.oop.cards.Card;
-import sk.stuba.fei.uim.oop.cards.blue.BlueCard;
 import sk.stuba.fei.uim.oop.cards.blue.Dynamite;
 import sk.stuba.fei.uim.oop.cards.blue.Prison;
 import sk.stuba.fei.uim.oop.cards.brown.Missed;
@@ -10,14 +9,13 @@ import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
-import java.util.stream.IntStream;
 
 public class BangGame {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_RED = "\u001B[31m";
-    private final Player[] players;
+    private Player[] players;
     private int currentPlayer;
     private Board board;
 
@@ -25,6 +23,12 @@ public class BangGame {
         System.out.println("--- Welcome to the game of BANG! ---" + ANSI_PURPLE);
         System.out.println(" Welcome to the world of madness and endless possibilities!" + ANSI_CYAN);
         System.out.println(" Today, you will dive into the exciting console game Bang, where every move can be " + "crucial in your fight for survival." + ANSI_BLUE);
+        this.initializationPlayers();
+        this.board = new Board(this.players);
+        this.startGame();
+    }
+
+    private void initializationPlayers() {
         int numberPlayers = 0;
         while (numberPlayers < 2 || numberPlayers > 4) {
             numberPlayers = ZKlavesnice.readInt(ANSI_BLUE + "*** Enter number of players (2-4): ***");
@@ -36,9 +40,6 @@ public class BangGame {
         for (int i = 0; i < numberPlayers; i++) {
             this.players[i] = new Player(ZKlavesnice.readString(ANSI_BLUE + "*** Enter name for " + "PLAYER " + (i + 1) + " : ***"));
         }
-        this.board = new Board(this.players);
-        this.startGame();
-
     }
 
     private void startGame() {
@@ -65,36 +66,36 @@ public class BangGame {
             Dynamite dynamite = new Dynamite(this.board);
 //            dynamite.getActionOfDynamite();
 
-                int dynamiteIndex = activePlayer.getIndexOfDynamite();
-                if(dynamiteIndex != -1) {
-                    if(dynamite.checkEffect(activePlayer)){
-                        dynamite.takeLifeFromPlayer(activePlayer, dynamiteIndex);
-                        if(!activePlayer.isActive()) {
-                            ArrayList<Card> removedCards = activePlayer.removeCardsFromHand();
-                            for (Card card : removedCards) {
-                                this.board.addDiscardingDeckCard(card);
-                            }
-                            this.incrementCounter();
-                            continue;
+            int dynamiteIndex = activePlayer.getIndexOfDynamite();
+            if (dynamiteIndex != -1) {
+                if (dynamite.checkEffect(activePlayer)) {
+                    dynamite.takeLifeFromPlayer(activePlayer, dynamiteIndex);
+                    if (!activePlayer.isActive()) {
+                        ArrayList<Card> removedCards = activePlayer.removeCardsFromHand();
+                        for (Card card : removedCards) {
+                            this.board.addDiscardingDeckCard(card);
                         }
-                    } else {
-                        dynamite.moveDynamiteToPreviousPlayer(activePlayer, dynamiteIndex);
-                    }
-
-                } else if (activePlayer.checkPrisoner()) {
-                    // проверь в тюрме ли он текущий игрок
-                    // если да, то удали карту Тюрма от него и пускай ходит дальше
-                    if (activePlayer.getBlueCards().get(0).checkEffect(activePlayer)) {
-                        // удали карту тюрма от игрока
-                        activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
-                        // add to gameCard
-                        this.board.addDiscardingDeckCard(new Prison(this.board));
                         this.incrementCounter();
                         continue;
                     }
-                    activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
-                    this.board.addDiscardingDeckCard(new Prison(this.board));
+                } else {
+                    dynamite.moveDynamiteToPreviousPlayer(activePlayer, dynamiteIndex);
                 }
+
+            } else if (activePlayer.checkPrisoner()) {
+                // проверь в тюрме ли он текущий игрок
+                // если да, то удали карту Тюрма от него и пускай ходит дальше
+                if (activePlayer.getBlueCards().get(0).checkEffect(activePlayer)) {
+                    // удали карту тюрма от игрока
+                    activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
+                    // add to gameCard
+                    this.board.addDiscardingDeckCard(new Prison(this.board));
+                    this.incrementCounter();
+                    continue;
+                }
+                activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
+                this.board.addDiscardingDeckCard(new Prison(this.board));
+            }
 
 
             System.out.println("Player cards on hand: " + activePlayer.printCardsOnHand());

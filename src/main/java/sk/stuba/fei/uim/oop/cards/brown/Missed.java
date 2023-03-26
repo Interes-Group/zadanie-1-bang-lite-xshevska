@@ -13,10 +13,10 @@ public class Missed extends Card {
 
     @Override
     public void playCard(Player player) {
-        System.out.println("BEFORE playing Missed card. GameCards = " + this.board.sizeOfGameCards());
+        System.out.println("BEFORE playing Missed card. GameCards = " + this.board.getDiscardingDeck().size());
         player.removeCard(this);
         this.board.addDiscardingDeckCard(this);
-        System.out.println("AFTER playing Missed card. GameCards = " + this.board.sizeOfGameCards());
+        System.out.println("AFTER playing Missed card. GameCards = " + this.board.getDiscardingDeck().size());
         System.out.println("Player " + player.getName() + " had luck and it saved him/her! [❤]");
     }
 }
