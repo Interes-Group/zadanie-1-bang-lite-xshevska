@@ -15,7 +15,7 @@ public class Missed extends Card {
     public void playCard(Player player) {
         System.out.println("BEFORE playing Missed card. GameCards = " + this.board.sizeOfGameCards());
         player.removeCard(this);
-        this.board.addGameCard(this);
+        this.board.addDiscardingDeckCard(this);
         System.out.println("AFTER playing Missed card. GameCards = " + this.board.sizeOfGameCards());
         System.out.println("Player " + player.getName() + " had luck and it saved him/her! [❤]");
     }

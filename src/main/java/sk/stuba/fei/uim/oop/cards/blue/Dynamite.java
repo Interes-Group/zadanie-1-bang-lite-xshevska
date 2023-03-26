@@ -24,7 +24,7 @@ public class Dynamite extends BlueCard {
             player.printDead();
         }
         player.removeBlueCard(index);
-        this.board.addGameCard(this);
+        this.board.addDiscardingDeckCard(this);
     }
 
     public void moveDynamiteToPreviousPlayer(Player player, int index) {

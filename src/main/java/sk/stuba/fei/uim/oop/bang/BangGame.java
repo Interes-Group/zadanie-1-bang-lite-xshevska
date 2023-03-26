@@ -46,12 +46,16 @@ public class BangGame {
 
         while (this.getNumberOfActivePlayers() > 1) {
             System.out.println("GAME CARDS: " + this.board.sizeOfGameCards());
+            System.out.println("GAME DISCARD CARDS: " + this.board.getDiscardingDeck().size());
+
             Player activePlayer = this.players[this.currentPlayer];
+
+            this.board.mergeCardDecks();
 
             if (!activePlayer.isActive()) {
                 ArrayList<Card> removedCards = activePlayer.removeCardsFromHand();
                 for (Card card : removedCards) {
-                    this.board.addGameCard(card);
+                    this.board.addDiscardingDeckCard(card);
                 }
                 this.incrementCounter();
                 continue;
@@ -68,7 +72,7 @@ public class BangGame {
                         if(!activePlayer.isActive()) {
                             ArrayList<Card> removedCards = activePlayer.removeCardsFromHand();
                             for (Card card : removedCards) {
-                                this.board.addGameCard(card);
+                                this.board.addDiscardingDeckCard(card);
                             }
                             this.incrementCounter();
                             continue;
@@ -84,12 +88,12 @@ public class BangGame {
                         // удали карту тюрма от игрока
                         activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
                         // add to gameCard
-                        this.board.addGameCard(new Prison(this.board));
+                        this.board.addDiscardingDeckCard(new Prison(this.board));
                         this.incrementCounter();
                         continue;
                     }
                     activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
-                    this.board.addGameCard(new Prison(this.board));
+                    this.board.addDiscardingDeckCard(new Prison(this.board));
                 }
 
 
@@ -101,7 +105,7 @@ public class BangGame {
             System.out.println(activePlayer);
             this.board.printPlayers();
 
-
+            // вытяни в функцию
             while (true) {
                 int numberCard = pickCard(activePlayer);
                 if (numberCard == -1) {

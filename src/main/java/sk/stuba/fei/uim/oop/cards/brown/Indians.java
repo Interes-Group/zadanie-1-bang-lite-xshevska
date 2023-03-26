@@ -21,7 +21,7 @@ public class Indians extends Card {
                 for (Card c : p.getCards()) {
                     if (c instanceof Bang) {
                         p.removeCard(c);
-                        this.board.addGameCard(c);
+                        this.board.addDiscardingDeckCard(c);
                         System.out.println(p.getName() + " had a card Bang! His life is saved.. but card is lost -1x🎴");
                         bang = true;
                         break;
@@ -38,6 +38,6 @@ public class Indians extends Card {
                 }
             }
         }
-        this.board.addGameCard(this);
+        this.board.addDiscardingDeckCard(this);
     }
 }

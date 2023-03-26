@@ -35,14 +35,14 @@ public class Bang extends Card {
 
         if (!check && missedCard != null) {
             missedCard.playCard(targetPlayer);
-            this.board.addGameCard(this);
+            this.board.addDiscardingDeckCard(this);
         } else {
             targetPlayer.removeLife();
             System.out.println("Player " + targetPlayer.getName() + " lost his/her live.. -💔x1" + "  ❤x" + targetPlayer.getLives());
             if (targetPlayer.getLives() <= 0) {
                 targetPlayer.printDead();
             }
-            this.board.addGameCard(this);
+            this.board.addDiscardingDeckCard(this);
         }
     }
 }

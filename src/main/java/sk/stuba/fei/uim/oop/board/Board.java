@@ -19,11 +19,14 @@ public class Board {
     private ArrayList<Card> gameCards;
     private Player[] players;
 
+    private ArrayList<Card> discardingDeck;
+
     public Board(Player[] players) {
         this.players = players;
         ArrayList<Card> cards = creatingCards();
         addingCardsForPlayers(players, cards);
         this.gameCards = cards;
+        this.discardingDeck = new ArrayList<>();
     }
 
     private void addingCardsForPlayers(Player[] players, ArrayList<Card> cards) {
@@ -43,16 +46,12 @@ public class Board {
     private ArrayList<Card> creatingCards() {
         ArrayList<Card> cards = new ArrayList<>();
         IntStream.range(0, 2).forEach(i -> cards.add(new Barrel(this)));
-//        IntStream.range(0, 20).forEach(i -> cards.add(new Barrel(this)));
-//        cards.add(new Dynamite(this));
-        IntStream.range(0, 20).forEach(i -> cards.add(new Dynamite(this)));
+        cards.add(new Dynamite(this));
         IntStream.range(0, 3).forEach(i -> cards.add(new Prison(this)));
-//        IntStream.range(0, 20).forEach(i -> cards.add(new Prison(this)));
         IntStream.range(0, 30).forEach(i -> cards.add(new Bang(this)));
         IntStream.range(0, 15).forEach(i -> cards.add(new Missed(this)));
         IntStream.range(0, 8).forEach(i -> cards.add(new Beer(this)));
-//        IntStream.range(0, 6).forEach(i -> cards.add(new CatBalou(this)));
-        IntStream.range(0, 15).forEach(i -> cards.add(new CatBalou(this)));
+        IntStream.range(0, 6).forEach(i -> cards.add(new CatBalou(this)));
         IntStream.range(0, 4).forEach(i -> cards.add(new Stagecoach(this)));
         IntStream.range(0, 2).forEach(i -> cards.add(new Indians(this)));
 
@@ -130,6 +129,7 @@ public class Board {
             // rand.nextInt((max - min) + 1) + min
             card = (int) (Math.random() * (player.getCards().size() - 0));
             System.out.println(player.getName() + " (" + i + ") - rand card is: " + player.getCards().get(card));
+            this.addDiscardingDeckCard(player.getCards().get(card));
             player.removeCard(card);
         }
     }
@@ -156,5 +156,30 @@ public class Board {
 
     public ArrayList<Card> getGameCards() {
         return gameCards;
+    }
+
+    public ArrayList<Card> getDiscardingDeck() {
+        return discardingDeck;
+    }
+
+    public void setDiscardingDeck(ArrayList<Card> discardingDeck) {
+        this.discardingDeck = discardingDeck;
+    }
+
+    public void addDiscardingDeckCard(Card card) {
+        this.discardingDeck.add(card);
+    }
+
+
+    public void mergeCardDecks() {
+        if (this.getGameCards().size() < 5) {
+            ArrayList<Card> newCards = new ArrayList<>(this.gameCards);
+            newCards.addAll(this.discardingDeck);
+            this.gameCards.clear();
+            this.discardingDeck.clear();
+            Collections.shuffle(newCards);
+            this.gameCards.addAll(newCards);
+            System.out.println("Cards from DiscardDeck are added to GameCards and they are shuffled.");
+        }
     }
 }

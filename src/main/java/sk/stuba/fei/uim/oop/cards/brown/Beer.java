@@ -16,6 +16,6 @@ public class Beer extends Card {
         super.playCard(player);
         System.out.println("Life up [❤ + 1] to " + player.getName());
         player.addLife();
-        this.board.addGameCard(this);
+        this.board.addDiscardingDeckCard(this);
     }
 }
