@@ -104,7 +104,6 @@ public class BangGame {
                     incrementCounter();
                     break;
                 }
-
                 int numberCard = pickCard(activePlayer);
                 if (numberCard == -1) {
                     System.out.println("Player want to SKIP his move.");
@@ -122,6 +121,7 @@ public class BangGame {
         System.out.println("--- GAME FINISHED ---");
     }
 
+
     private void makeTurn(Player activePlayer, int numberCard) {
         Card selectedCard = activePlayer.getCards().get(numberCard);
 
@@ -131,7 +131,7 @@ public class BangGame {
             ArrayList<Player> playable = this.checkPlayersToAction(activePlayer, selectedCard);
 
             System.out.println("list of players: ");
-            playable.forEach((e) -> System.out.print(e.getName() + " " + "BBB"));
+            playable.forEach((e) -> System.out.print(e.getName() + " "));
 
             if (playable.size() != 0) {
                 activePlayer.removeCard(numberCard);

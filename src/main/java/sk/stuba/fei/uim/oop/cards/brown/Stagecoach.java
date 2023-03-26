@@ -20,7 +20,6 @@ public class Stagecoach extends Card {
         } else {
             this.board.pullTwoCards(player);
             this.board.addDiscardingDeckCard(this);
-            System.out.println("Two cards are pulled to " + player.getName() + ".");
         }
     }
 }

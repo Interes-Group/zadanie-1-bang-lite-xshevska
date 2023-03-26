@@ -39,9 +39,7 @@ public class Board {
 
     private ArrayList<Card> creatingCards() {
         ArrayList<Card> cards = new ArrayList<>();
-
-        IntStream.range(0, 20).forEach(i -> cards.add(new Barrel(this)));
-
+        IntStream.range(0, 2).forEach(i -> cards.add(new Barrel(this)));
         cards.add(new Dynamite(this));
         IntStream.range(0, 3).forEach(i -> cards.add(new Prison(this)));
         IntStream.range(0, 30).forEach(i -> cards.add(new Bang(this)));
@@ -55,6 +53,7 @@ public class Board {
         return cards;
     }
 
+
     public void printPlayers() {
         System.out.println("\n--- Game Board --- DEAD PLAYERS: 💀x" + this.countDeadPlayers());
         for (int i = 0; i < players.length; i++) {
@@ -62,11 +61,6 @@ public class Board {
                 System.out.println("Id: " + (i + 1) + " - " + players[i].getName() + " * " + "❤x" + players[i].getLives() + " * " + "[" + players[i].getBlueCards().stream().map((e) -> {
                     StringBuffer st = new StringBuffer();
                     st.append(e.getName()).append(" | ");
-                    return st;
-                }).collect(Collectors.joining()) + "]" +
-                        "\n ALL CARDS: [" + players[i].getCards().stream().map((e) -> {
-                    StringBuffer st = new StringBuffer();
-                    st.append(e.getName()).append(" ");
                     return st;
                 }).collect(Collectors.joining()) + "]");
             }
