@@ -64,8 +64,8 @@ public class BangGame {
 
             // проверь карту динамит, есть ли она на доске
             Dynamite dynamite = new Dynamite(this.board);
-//            dynamite.getActionOfDynamite();
-
+            // ЭТО ТО ЧТО ДОБАВИЛ
+            Prison prison = new Prison(this.board);
             int dynamiteIndex = activePlayer.getIndexOfDynamite();
             if (dynamiteIndex != -1) {
                 if (dynamite.checkEffect(activePlayer)) {
@@ -83,19 +83,22 @@ public class BangGame {
                 }
 
             }
+
             if (activePlayer.checkPrisoner()) {
-                // проверь в тюрме ли он текущий игрок
-                // если да, то удали карту Тюрма от него и пускай ходит дальше
-                if (activePlayer.getBlueCards().get(0).checkEffect(activePlayer)) {
+                //если вернет false
+                if (!prison.checkEffect(activePlayer)) {
                     // удали карту тюрма от игрока
+                    System.out.println("Игрок остается в тюрьмы!");
                     activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
-                    // add to gameCard
                     this.board.addDiscardingDeckCard(new Prison(this.board));
                     this.incrementCounter();
                     continue;
+                } else {
+                    System.out.println("Игрок сбегает из тюрьмы!" + activePlayer.getName());
+                    activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
+                    this.board.addDiscardingDeckCard(new Prison(this.board));
                 }
-                activePlayer.removeBlueCard(this.board.findPrison(activePlayer));
-                this.board.addDiscardingDeckCard(new Prison(this.board));
+
             }
 
 
@@ -109,7 +112,6 @@ public class BangGame {
 
             // вытяни в функцию
             while (true) {
-                //BBB
                 if (getNumberOfActivePlayers() == 1) {
                     System.out.println("🎈 This game was won by the player! 🎈 : " + activePlayer.getName() + " 🥇");
                     incrementCounter();
